@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, Types } from "mongoose";
 
 export interface IStep {
-    createdBy:Types.ObjectId;
+    createdBy: Types.ObjectId;
     name: string;
     description?: string;
 }

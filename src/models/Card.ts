@@ -1,10 +1,10 @@
 import mongoose, { Schema, model, Types } from "mongoose";
 
 export interface ICard {
-    createdBy:Types.ObjectId;
-    asignTo:Types.ObjectId;
-    belongTo:Types.ObjectId,
-    inStep:Types.ObjectId,
+    createdBy: Types.ObjectId;
+    asignTo: Types.ObjectId;
+    belongTo: Types.ObjectId,
+    inStep: Types.ObjectId,
     title: string;
     description?: string;
 }

@@ -1,8 +1,8 @@
 import mongoose, { Schema, model, Types } from "mongoose";
 
 export interface IComment {
-    createdBy:Types.ObjectId;
-    belongTo:Types.ObjectId,
+    createdBy: Types.ObjectId;
+    belongTo: Types.ObjectId,
     text: string;
 }
 

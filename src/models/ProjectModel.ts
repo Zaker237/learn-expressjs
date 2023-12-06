@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, Types } from "mongoose";
 
 export interface IProject {
-    owner:Types.ObjectId;
+    owner: Types.ObjectId;
     name: string;
     description?: string;
     startAt: Date;
