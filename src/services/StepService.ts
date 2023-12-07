@@ -13,7 +13,7 @@ export default class StepService {
         const stepResponse: StepResource[] = [];
         for (const step of steps) {
             const resource = this.getStepAsStepResource(step);
-            stepResponse.push(resource)
+            stepResponse.push(resource);
         }
         return stepResponse;
     }
