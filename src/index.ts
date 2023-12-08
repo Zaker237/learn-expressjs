@@ -6,7 +6,7 @@ dotenv.config() // read ".env"
 import http from "http";
 import mongoose from 'mongoose';
 import app from "./app";
-import { logger } from "./logger"
+import { logger } from "./logger";
 
 async function setup() {
     let mongodURI = process.env.DB_CONNECTION_STRING;
