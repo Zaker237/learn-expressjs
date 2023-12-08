@@ -78,7 +78,7 @@ export default class CommentService {
         return this.getCommentAsCommentResource(savedComment);
     }
 
-    public static async updateStep(comment: CommentResource): Promise<CommentResource> {
+    public static async updateComment(comment: CommentResource): Promise<CommentResource> {
         let user = await User.find({ id: new Types.ObjectId(comment.createdBy) }).exec();
         if (!user) {
             throw new Error(`User with ID ${comment.createdBy} not found`);

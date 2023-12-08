@@ -4,6 +4,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 
 import { stepRouter } from "./routes/step";
+import { commentRouter } from "./routes/comment";
 
 const app = express();
 
@@ -44,5 +45,6 @@ app.use(
     swaggerUi.setup(specs, { explorer: true })
 );
 app.use("/api/v0/steps", stepRouter);
+app.use("/api/v0/comments", commentRouter);
 
 export default app;

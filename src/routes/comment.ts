@@ -1,42 +1,43 @@
 import express from "express";
-import StepService from "../services/StepService";
-import { StepResource } from "../resources";
+import CommentService from "../services/CommentService";
+import { CommentResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
 
 
-export const stepRouter = express.Router();
+export const commentRouter = express.Router();
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Step:
+ *     Comment:
  *       type: object
  *       required:
- *         - name
  *         - createdBy
+ *         - belongTo
+ *         - text
  *       properties:
  *         id:
  *           type: string
  *           description: The auto-generated id of the step
- *         name:
- *           type: string
- *           description: The name of your Step
  *         createdBy:
  *           type: string
  *           description: The Step author
- *         description:
+ *         belongTo:
  *           type: string
- *           description: The Description of the staep
+ *           description: The Card to wish the Comment belong
+ *         text:
+ *           type: string
+ *           description: The name of your Step
  *         createdAt:
  *           type: string
  *           format: date
  *           description: The date the book was added
  *       example:
- *         id: kjdvbdvd-fbf-vbfdb-fdb
- *         title: Done
+ *         id: kjdvb-dvd-fbf-vbfdb-fdb
  *         createdBy: Alex
- *         description: The step for card that habe been finished
+ *         belongTo: kdjvjb-dfgdgfdg-gdfghf
+ *         text: i'm currently working on this card
  *         createdAt: 2023-12-10T04:05:06.157Z
  */
 
@@ -44,12 +45,12 @@ export const stepRouter = express.Router();
 /**
  * @swagger
  * tags:
- *   name: Steps
- *   description: The Steps managing API
- * /api/v0/steps/user/{userId}:
+ *   name: Comments
+ *   description: The Comments managing API
+ * /api/v0/comments/user/{userId}:
  *   get:
- *     summary: Lists all the steps by user
- *     tags: [Steps]
+ *     summary: Lists all the comments by user
+ *     tags: [Comments]
  *     parameters:
  *       - in: path
  *         name: userId
@@ -59,16 +60,16 @@ export const stepRouter = express.Router();
  *         description: The user id
  *     responses:
  *       200:
- *         description: The list of the steps
+ *         description: The list of the comments
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Step'
+ *                 $ref: '#/components/schemas/Comment'
  *
  */
-stepRouter.get("/user/:userId",
+commentRouter.get("/user/:userId",
     param('userId').isString(),
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -77,8 +78,8 @@ stepRouter.get("/user/:userId",
         }
         const id = req.params?.userId;
         try {
-            const steps = await StepService.getStepsCreatedByUser(id);
-            res.send(steps);
+            const comments = await CommentService.getCommentsCreatedByUser(id);
+            res.send(comments);
         } catch (err) {
             res.status(404);
             next(err);
@@ -89,28 +90,28 @@ stepRouter.get("/user/:userId",
 /**
  * @swagger
  * tags:
- *   name: Steps
- *   description: The Steps managing API
- * /api/v0/steps:
+ *   name: Comments
+ *   description: The Comments managing API
+ * /api/v0/commets:
  *   get:
- *     summary: Lists all the steps
- *     tags: [Steps]
+ *     summary: Lists all the comments
+ *     tags: [Comments]
  *     responses:
  *       200:
- *         description: The list of the steps
+ *         description: The list of the comments
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Step'
+ *                 $ref: '#/components/schemas/Comment'
  *
  */
-stepRouter.get("/", async (req, res, next) => {
+commentRouter.get("/", async (req, res, next) => {
     try {
-        let steps: StepResource[] = await StepService.getAllSteps();
+        let comments: CommentResource[] = await CommentService.getAllComments();
         res.status(200)
-        res.send(steps)
+        res.send(comments)
     } catch (err) {
         res.status(404);
         next(err);
@@ -121,31 +122,31 @@ stepRouter.get("/", async (req, res, next) => {
 /**
  * @swagger
  * tags:
- *   name: Steps
- *   description: The Steps managing API
- * /api/v0/steps/{id}:
+ *   name: Comments
+ *   description: The Comments managing API
+ * /api/v0/comments/{id}:
  *  get:
- *     summary: Get the step by id
- *     tags: [Steps]
+ *     summary: Get the comment by id
+ *     tags: [Comments]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The step id
+ *         description: The comment id
  *     responses:
  *       200:
- *         description: The step response by id
+ *         description: The comment response by id
  *         contens:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Step'
+ *               $ref: '#/components/schemas/Comment'
  *       404:
- *         description: The step was not found
+ *         description: The comment was not found
  *
  */
-stepRouter.get("/:id",
+commentRouter.get("/:id",
     param('id').isString(),
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -154,9 +155,9 @@ stepRouter.get("/:id",
         }
         const id = req.params?.id;
         try {
-            let step: StepResource = await StepService.getStepById(id)
+            let comment: CommentResource = await CommentService.getCommentById(id)
             res.status(200)
-            res.send(step)
+            res.send(comment)
         } catch (err) {
             res.status(404);
             next(err);
@@ -167,33 +168,33 @@ stepRouter.get("/:id",
 /**
  * @swagger
  * tags:
- *   name: Steps
- *   description: The Steps managing API
- * /api/v0/steps:
+ *   name: Comments
+ *   description: The Comments managing API
+ * /api/v0/comments:
  *   post:
  *     summary: Create a new Step
- *     tags: [Steps]
+ *     tags: [Comments]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Step'
+ *             $ref: '#/components/schemas/Comment'
  *     responses:
  *       200:
- *         description: The created step.
+ *         description: The created comment.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Step'
+ *               $ref: '#/components/schemas/Comment'
  *       500:
  *         description: Some server error
  *
  */
-stepRouter.post("/",
+commentRouter.post("/",
     body('createdBy').isString(),
-    body('name').isString().isLength({ min: 1, max: 100 }),
-    body('description').optional().isString(),
+    body('belongTo').isString(),
+    body('text').isString().isLength({ min: 1, max: 1000 }),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -201,14 +202,14 @@ stepRouter.post("/",
         }
         try {
             const body = req.body
-            let newStep: StepResource = {
+            let newComment: CommentResource = {
                 createdBy: body.createdBy,
-                name: body.name,
-                description: body.description ? body.description : ""
+                belongTo: body.belongTo,
+                text: body.text
             }
-            let createdStep: StepResource = await StepService.createStep(newStep);
+            let createdComment: CommentResource = await CommentService.createComment(newComment);
             res.status(200)
-            res.send(createdStep)
+            res.send(createdComment)
         } catch (err) {
             res.status(404);
             next(err);
@@ -219,42 +220,42 @@ stepRouter.post("/",
 /**
  * @swagger
  * tags:
- *   name: Steps
- *   description: The Steps managing API
- * /api/v0/steps/{id}:
+ *   name: Comments
+ *   description: The Comments managing API
+ * /api/v0/comments/{id}:
  *   put:
- *     summary: Update a new Step
- *     tags: [Steps]
+ *     summary: Update a new Comment
+ *     tags: [Comments]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The step id
+ *         description: The comment id
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Step'
+ *             $ref: '#/components/schemas/Comment'
  *     responses:
  *       200:
- *         description: The created step.
+ *         description: The updated comment.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Step'
+ *               $ref: '#/components/schemas/Comment'
  *       500:
  *         description: Some server error
  *
  */
-stepRouter.put("/:id",
+commentRouter.put("/:id",
     param('id').isString(),
     body('id').isString(),
     body('createdBy').isString(),
-    body('name').isString().isLength({ min: 1, max: 100 }),
-    body('description').optional().isString(),
+    body('belongTo').isString(),
+    body('text').isString().isLength({ min: 1, max: 1000 }),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -267,15 +268,15 @@ stepRouter.put("/:id",
             if (id != body.id)
                 throw new Error("defferent ids")
 
-            let newStep: StepResource = {
+            let newComment: CommentResource = {
                 id: body.id,
                 createdBy: body.createdBy,
-                name: body.name,
-                description: body.description ? body.description : ""
+                belongTo: body.belongTo,
+                text: body.text
             }
-            let updatedStep: StepResource = await StepService.updateStep(newStep);
+            let updatedComment: CommentResource = await CommentService.updateComment(newComment);
             res.status(200)
-            res.send(updatedStep)
+            res.send(updatedComment)
         } catch (err) {
             res.status(404);
             next(err);
@@ -286,28 +287,28 @@ stepRouter.put("/:id",
     /**
  * @swagger
  * tags:
- *   name: Steps
- *   description: The Steps managing API
- * /api/v0/steps/{id}:
+ *   name: Comments
+ *   description: The Comments managing API
+ * /api/v0/comments/{id}:
  *  delete:
- *     summary: Remove the step by id
- *     tags: [Steps]
+ *     summary: Remove the comment by id
+ *     tags: [Comments]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The step id
+ *         description: The comment id
  *
  *     responses:
  *       200:
- *         description: The step was deleted
+ *         description: The comment was deleted
  *       404:
- *         description: The step was not found
+ *         description: The comment was not found
  *
  */
-stepRouter.delete("/:id",
+commentRouter.delete("/:id",
     param('id').isString(),
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -316,9 +317,9 @@ stepRouter.delete("/:id",
         }
         const id = req.params?.id;
         try {
-            await StepService.deleteStep(id)
+            await CommentService.deleteComment(id)
             res.status(200)
-            res.send("Step wird erfolgreich gelöscht")
+            res.send("Comment wird erfolgreich gelöscht")
         } catch (err) {
             res.status(404);
             next(err);
