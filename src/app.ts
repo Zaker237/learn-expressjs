@@ -3,6 +3,8 @@ import "express-async-errors";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 
+import { stepRouter } from "./routes/step";
+
 const app = express();
 
 const options = {
@@ -29,7 +31,7 @@ const options = {
             },
         ],
     },
-    apis: ["./routes/*.js"],
+    apis: ["./src/routes/*.ts"],
 };
 
 const specs = swaggerJsdoc(options);
@@ -39,7 +41,8 @@ app.use("*", express.json());
 app.use(
     "/api-docs",
     swaggerUi.serve,
-    swaggerUi.setup(specs)
+    swaggerUi.setup(specs, { explorer: true })
 );
+app.use("/api/v0/steps", stepRouter);
 
 export default app;
