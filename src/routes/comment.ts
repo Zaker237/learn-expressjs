@@ -266,7 +266,7 @@ commentRouter.put("/:id",
             const body = req.body
 
             if (id != body.id)
-                throw new Error("defferent ids")
+                throw new Error("different ids")
 
             let newComment: CommentResource = {
                 id: body.id,
@@ -319,7 +319,7 @@ commentRouter.delete("/:id",
         try {
             await CommentService.deleteComment(id)
             res.status(200)
-            res.send("Comment wird erfolgreich gelöscht")
+            res.send("Comment has been deleted")
         } catch (err) {
             res.status(404);
             next(err);

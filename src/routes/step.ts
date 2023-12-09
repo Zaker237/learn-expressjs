@@ -265,7 +265,7 @@ stepRouter.put("/:id",
             const body = req.body
 
             if (id != body.id)
-                throw new Error("defferent ids")
+                throw new Error("different ids")
 
             let newStep: StepResource = {
                 id: body.id,
@@ -318,7 +318,7 @@ stepRouter.delete("/:id",
         try {
             await StepService.deleteStep(id)
             res.status(200)
-            res.send("Step wird erfolgreich gelöscht")
+            res.send("Step has been deleted")
         } catch (err) {
             res.status(404);
             next(err);

@@ -5,6 +5,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 
 import { stepRouter } from "./routes/step";
 import { commentRouter } from "./routes/comment";
+import { projectRouter } from "./routes/project";
 
 const app = express();
 
@@ -46,5 +47,6 @@ app.use(
 );
 app.use("/api/v0/steps", stepRouter);
 app.use("/api/v0/comments", commentRouter);
+app.use("/api/v0/projects", projectRouter);
 
 export default app;
