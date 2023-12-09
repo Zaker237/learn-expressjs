@@ -7,5 +7,6 @@ export type ProjectResource = {
     endsAt: Date
     public?: boolean
     closed?: boolean
+    githublink?: string
     updatedAt?: Date
 }

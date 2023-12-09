@@ -55,6 +55,7 @@ export default class ProjectService {
             startAt: project.startAt,
             endsAt: project.endsAt,
             public: project.public,
+            githublink: project.githublink,
             closed: project.closed
         });
         const existingProject = await Project.findOne({ owner: newProject.owner, name: newProject.name }).exec()
@@ -83,6 +84,7 @@ export default class ProjectService {
                 endsAt: project.endsAt,
                 public: project.public,
                 closed: project.closed,
+                githublink: project.githublink,
                 updatedAt: new Date()
             },
             { new: true, runValidators: true }
@@ -116,6 +118,7 @@ export default class ProjectService {
             endsAt: data.endsAt,
             public: data.public,
             closed: data.closed,
+            githublink: data.githublink,
             updatedAt: data.updatedAt
         }
         return resource;

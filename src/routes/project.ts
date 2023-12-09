@@ -44,6 +44,9 @@ export const projectRouter = express.Router();
  *         closed:
  *           type: string
  *           description: whether or not the project was closed
+ *         githublink:
+ *           type: string
+ *           description: the project's github repos
  *         updatedAt:
  *           type: string
  *           format: date
@@ -57,6 +60,7 @@ export const projectRouter = express.Router();
  *         endsAt: 2024-12-10T04:05:06.157Z
  *         public: true
  *         closed: false
+ *         githublink: https://github.com/Zaker237/learn-expressjs
  *         createdAt: 2023-12-10T04:05:06.157Z
  *         updatedAt: 2023-12-10T04:05:06.157Z
  */
@@ -233,7 +237,8 @@ projectRouter.post("/",
                 endsAt: body.endsAt,
                 description: body.description ? body.description : "",
                 public: body.public,
-                closed: body.closed
+                closed: body.closed,
+                githublink: body.githublink
             }
             let createdProject: ProjectResource = await ProjectService.createProject(newProject);
             res.status(200)
@@ -308,7 +313,8 @@ projectRouter.put("/:id",
                 endsAt: body.endsAt,
                 description: body.description ? body.description : "",
                 public: body.public,
-                closed: body.closed
+                closed: body.closed,
+                githublink: body.githublink
             }
             let updatedProject: ProjectResource = await ProjectService.updateProject(newProject);
             res.status(200)
