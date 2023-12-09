@@ -111,7 +111,7 @@ export default class ProjectService {
     public static getProjectAsProjectResource(data: any): ProjectResource {
         const resource: ProjectResource = {
             id: data.id,
-            owner: data.createdBy.toString(),
+            owner: data.owner.toString(),
             name: data.name,
             description: data.description,
             startAt: data.startAt,
