@@ -3,8 +3,9 @@ import "express-async-errors";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 
-import { stepRouter } from "./routes/step";
+import { cardRouter } from "./routes/card";
 import { commentRouter } from "./routes/comment";
+import { stepRouter } from "./routes/step";
 import { projectRouter } from "./routes/project";
 
 const app = express();
@@ -48,5 +49,6 @@ app.use(
 app.use("/api/v0/steps", stepRouter);
 app.use("/api/v0/comments", commentRouter);
 app.use("/api/v0/projects", projectRouter);
+app.use("/api/v0/cards", cardRouter);
 
 export default app;
