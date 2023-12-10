@@ -5,18 +5,24 @@ In this repos i'm building the REST API of an Project Management App With Expres
 - Node.js 18+
 - NPM
 
-## IHow to run in local
+## How to run in local
+
+- Clone this repo and cd into it
+
+```bash
+$ git clone https://github.com/Zaker237/learn-expressjs.git && cd learn-expressjs
+```
 
 - Install dependencies
 
 ```bash
-npm install
+$ npm install
 ```
 
 - Start Application
 
 ```bash
-npm run start
+$ npm run start
 ```
 
 The application will be launched by [Nodemon](https://nodemon.com) so it's will restart automatically on file change
