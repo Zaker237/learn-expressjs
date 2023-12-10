@@ -1,3 +1,5 @@
+# Project Management App REST API
+
 In this repos i'm building the REST API of an Project Management App With ExpressJs, Typescript and MongoDB. It also has a swagger documentation generated automatically with [swagger-ui-express](https://github.com/scottie1984/swagger-ui-express) and [swagger-jsdoc](https://github.com/Surnet/swagger-jsdoc).
 
 ## Prerequisites
