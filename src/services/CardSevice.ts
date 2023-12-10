@@ -10,13 +10,13 @@ import { Step } from "../models/StepModel";
 
 export default class CardService {
     public static async getAllCards(): Promise<CardResource[]> {
-        const Cards = await Card.find().exec();
-        const CardResponse: CardResource[] = [];
-        for (const Card of Cards) {
-            const resource = this.getCardAsCardResource(Card);
-            CardResponse.push(resource);
+        const cards = await Card.find().exec();
+        const cardResponse: CardResource[] = [];
+        for (const card of cards) {
+            const resource = this.getCardAsCardResource(card);
+            cardResponse.push(resource);
         }
-        return CardResponse;
+        return cardResponse;
     }
 
     public static async getCardsCreatedByUser(userId: string): Promise<CardResource[]> {
@@ -24,16 +24,55 @@ export default class CardService {
         if (!user) {
             throw new Error(`User with ID ${userId} not found`);
         }
-        const Cards = await Card.find({
+        const cards = await Card.find({
             owner: new Types.ObjectId(userId)
         }).exec();
 
-        const CardResponse: CardResource[] = [];
-        for (const Card of Cards) {
-            const resource = this.getCardAsCardResource(Card);
-            CardResponse.push(resource)
+        const cardResponse: CardResource[] = [];
+        for (const card of cards) {
+            const resource = this.getCardAsCardResource(card);
+            cardResponse.push(resource)
         }
-        return CardResponse;
+        return cardResponse;
+    }
+
+    public static async getCardsByProjectId(projectId: string): Promise<CardResource[]> {
+        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        if (!project) {
+            throw new Error(`Project with ID ${projectId} not found`);
+        }
+        const cards = await Card.find({
+            belongTo: new Types.ObjectId(projectId)
+        }).exec();
+
+        const cardResponse: CardResource[] = [];
+        for (const card of cards) {
+            const resource = this.getCardAsCardResource(card);
+            cardResponse.push(resource)
+        }
+        return cardResponse;
+    }
+
+    public static async getCardsByProjectIdAndStepId(projectId: string, stepId: string): Promise<CardResource[]> {
+        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        if (!project) {
+            throw new Error(`Project with ID ${projectId} not found`);
+        }
+        let step = await Step.find({ id: new Types.ObjectId(stepId) }).exec();
+        if (!step) {
+            throw new Error(`Step with ID ${stepId} not found`);
+        }
+        const cards = await Card.find({
+            belongTo: new Types.ObjectId(projectId),
+            inStep: new Types.ObjectId(stepId),
+        }).exec();
+
+        const cardResponse: CardResource[] = [];
+        for (const card of cards) {
+            const resource = this.getCardAsCardResource(card);
+            cardResponse.push(resource)
+        }
+        return cardResponse;
     }
 
     public static async getCardById(id: string): Promise<CardResource> {

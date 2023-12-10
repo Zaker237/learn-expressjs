@@ -63,7 +63,7 @@ export const cardRouter = express.Router();
  *   description: The Cards managing API
  * /api/v0/cards/user/{userId}:
  *   get:
- *     summary: Lists all the cards by user
+ *     summary: Lists all the cards filter by user
  *     tags: [Cards]
  *     parameters:
  *       - in: path
@@ -93,6 +93,104 @@ cardRouter.get("/user/:userId",
         const id = req.params?.userId;
         try {
             const cards = await CardService.getCardsCreatedByUser(id);
+            res.send(cards);
+        } catch (err) {
+            res.status(404);
+            next(err);
+        }
+    })
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Cards
+ *   description: The Cards managing API
+ * /api/v0/cards/{projectId}:
+ *   get:
+ *     summary: Lists all the cards filter by project
+ *     tags: [Cards]
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The project id
+ *     responses:
+ *       200:
+ *         description: The list of the cards
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Card'
+ *
+ */
+cardRouter.get("/:projectId",
+    param('projectId').isString(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const projectId = req.params?.projectId;
+        try {
+            const cards = await CardService.getCardsByProjectId(projectId);
+            res.send(cards);
+        } catch (err) {
+            res.status(404);
+            next(err);
+        }
+    })
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Cards
+ *   description: The Cards managing API
+ * /api/v0/cards/{projectId}/{stepId}:
+ *   get:
+ *     summary: Lists all the cards filter by project and step
+ *     tags: [Cards]
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The project id
+ *       - in: path
+ *         name: stepId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The step id
+ *     responses:
+ *       200:
+ *         description: The list of the cards
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Card'
+ *
+ */
+cardRouter.get("/:projectId/:stepId",
+    param('projectId').isString(),
+    param('stepId').isString(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const projectId = req.params?.projectId;
+        const stepId = req.params?.stepId;
+        try {
+            const cards = await CardService.getCardsByProjectIdAndStepId(projectId, stepId);
             res.send(cards);
         } catch (err) {
             res.status(404);
