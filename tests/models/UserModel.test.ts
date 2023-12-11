@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 
 test('Genereller Test', async () => {
     let test = {
-        username: "username", firstname: "firstname", lastname: false,
+        username: "username", firstname: "firstname", lastname: "lastname",
         email: "test@email.test", googleId: "googleId"
-    }
-    const user = new User(test)
-    await user.save()
+    };
+    const user = new User(test);
+    await user.save();
     let result: any = await User.findOne({ name: "username" });
     expect(result).toBeInstanceOf(User);
     expect(result.username).toBe(test.username);
@@ -16,61 +16,61 @@ test('Genereller Test', async () => {
 
 test('without username', async () => {
     let test2 = {
-        firstname: "firstname", lastname: false,
+        firstname: "firstname", lastname: "lastname",
         email: "test@email.test", googleId: "googleId"
-    }
-    const user = new User(test2)
+    };
+    const user = new User(test2);
     try {
-        await user.save()
+        await user.save();
     } catch (e) {
 
     }
-    let result: any = await User.findOne({ firstname: "firstname" })
-    expect(result).toBeFalsy()
+    let result: any = await User.findOne({ firstname: "firstname" });
+    expect(result).toBeFalsy();
 });
 
 
 test('without email', async () => {
     let test3 = {
-        username: "username", firstname: "firstname", lastname: false,
+        username: "username", firstname: "firstname", lastname: "lastname",
         googleId: "googleId"
-    }
-    const user = new User(test3)
+    };
+    const user = new User(test3);
     try {
-        await user.save()
+        await user.save();
     } catch (e) {
     }
-    let result: any = await User.findOne({username: "username"})
-    expect(result).toBeFalsy()
+    let result: any = await User.findOne({username: "username"});
+    expect(result).toBeFalsy();
 });
 
 test('without google Id', async () => {
     let test4 = {
-        username: "username4", firstname: "firstname", lastname: false,
+        username: "username4", firstname: "firstname", lastname: "lastname",
         email: "test@email.test"
-    }
-    const user = new User(test4)
+    };
+    const user = new User(test4);
     try {
-        await user.save()
+        await user.save();
     } catch (e) {
 
     }
-    let result: any = await User.findOne({ username: "username4" })
+    let result: any = await User.findOne({ username: "username4" });
     expect(result).toBeFalsy();
 });
 
 test('with admin ', async () => {
     let test5 = {
-        username: "username5", firstname: "firstname", lastname: false,
+        username: "username5", firstname: "firstname", lastname: "lastname",
         email: "test@email.test", googleId: "googleId", admin: true
-    }
-    const user = new User(test5)
+    };
+    const user = new User(test5);
     try {
-        await user.save()
+        await user.save();
     } catch (e) {
 
     }
-    let result: any = await User.findOne({ username: "username5" })
+    let result: any = await User.findOne({ username: "username5" });
     expect(result.admin).toBe(true);
     expect(result).toBeInstanceOf(User);
 });
