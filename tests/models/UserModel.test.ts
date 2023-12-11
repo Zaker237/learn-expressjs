@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 
 test('Genereller Test', async () => {
     let test = {
-        username: "username", firstname: "firstname", lastname: "lastname",
+        username: "username1", firstname: "firstname", lastname: "lastname",
         email: "test@email.test", googleId: "googleId"
     };
     const user = new User(test);
     await user.save();
-    let result: any = await User.findOne({ name: "username" });
+    let result: any = await User.findOne({ username: "username1" });
     expect(result).toBeInstanceOf(User);
     expect(result.username).toBe(test.username);
     expect(result.admin).toBe(false);
