@@ -32,3 +32,10 @@ The application will be launched by [Nodemon](https://nodemon.com) so it's will 
 Test the API with `Postman`
 
 Swagger: `http://localhost:3002/api-docs/`
+
+
+## How to run test in local
+
+```bash
+$ npm run test
+```
