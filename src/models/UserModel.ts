@@ -2,8 +2,8 @@ import mongoose, { Schema, model, Types } from "mongoose";
 
 export interface IUser{
     username: string;
-    firstname: string;
-    lastname: string;
+    firstname?: string;
+    lastname?: string;
     email: string;
     googleId: string;
     admin?: boolean;
