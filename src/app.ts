@@ -7,6 +7,7 @@ import { cardRouter } from "./routes/card";
 import { commentRouter } from "./routes/comment";
 import { stepRouter } from "./routes/step";
 import { projectRouter } from "./routes/project";
+import { userRouter } from "./routes/user";
 
 const app = express();
 
@@ -50,5 +51,6 @@ app.use("/api/v0/steps", stepRouter);
 app.use("/api/v0/comments", commentRouter);
 app.use("/api/v0/projects", projectRouter);
 app.use("/api/v0/cards", cardRouter);
+app.use("/api/v0/users", userRouter);
 
 export default app;

@@ -1,7 +1,7 @@
 import express from "express";
 import { UserResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
-import UserService from "src/services/UserService";
+import UserService from "../services/UserService";
 
 
 export const userRouter = express.Router();
