@@ -31,7 +31,7 @@ export default class UserService {
             googleId: user.googleId,
             admin: user.admin ? true : false
         });
-        const existingUser = await User.findOne({ email: newUser.email }).exec()
+        const existingUser = await User.findOne({ email: user.email }).exec()
         if (existingUser) {
             throw new Error("The User already exists.");
         }
@@ -69,7 +69,7 @@ export default class UserService {
                 throw new Error(`User with ID ${id} not found`);
             }
         } catch (error) {
-            throw new Error("User could not be deleted.")
+            throw new Error(`User(${id}) could not be deleted.`);
         }
     }
 
