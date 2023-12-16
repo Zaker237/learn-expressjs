@@ -38,6 +38,14 @@ test("/api/v0/users/:id get user by id", async () => {
 });
 
 
+test("/api/v0/users/:id get user by badID", async () => {
+    const testee = supertest(app);
+    const response = await testee.get(`/api/v0/users/klklsahflksblkbsfkldb`);
+    const allUsers = await UserService.getAllUsers()
+    expect(response.statusCode).toBe(404);
+});
+
+
 test("/api/v0/users/:id delete user by id", async () => {
     var newUser = await UserService.createUser({
         username: "username3",
@@ -54,6 +62,13 @@ test("/api/v0/users/:id delete user by id", async () => {
 });
 
 
+test("/api/v0/users/:id delete user by id", async () => {
+    const testee = supertest(app);
+    const response = await testee.delete(`/api/v0/users/jbvkjvbfkdjdhvkjdsbkvj`);
+    expect(response.statusCode).toBe(404);
+});
+
+
 test("/api/v0/users/ add user", async () => {
     const testee = supertest(app);
     const response = await testee.post(`/api/v0/users/`).send({
@@ -66,6 +81,25 @@ test("/api/v0/users/ add user", async () => {
     expect(response.statusCode).toBe(200);
     expect(allPfleger.length).toBe(1);
 });
+
+
+test("/api/v0/users/ add user sur existing email", async () => {
+    const testee = supertest(app);
+    await testee.post(`/api/v0/users/`).send({
+        username: "username44",
+        firstname: "firstname44",
+        email: "test4@email.test",
+        googleId: "googleId44",
+    })
+    const response = await testee.post(`/api/v0/users/`).send({
+        username: "username4",
+        firstname: "firstname4",
+        email: "test4@email.test",
+        googleId: "googleId4",
+    });
+    expect(response.statusCode).toBe(404);
+});
+
 
 test("/api/v0/users/:id update user", async () => {
     var newUser = await UserService.createUser({

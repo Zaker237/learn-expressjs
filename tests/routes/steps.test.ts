@@ -56,7 +56,7 @@ test("/api/v0/steps/user/:userId get alle, 5 Users", async () => {
 test("/api/v0/steps/user/:userId get alle, badId", async () => {
     for (let i = 1; i <= 5; i++) {
         await StepService.createStep({
-            createdBy: idUser!,
+            createdBy: idUser,
             name: `name${i}`,
             description:  `description${i}`
         })
