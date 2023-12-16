@@ -37,10 +37,10 @@ export default class StepService {
         return stepResponse;
     }
 
-    public static async getStepById(id: string): Promise<StepResource> {
-        let step = await Step.find({ id: new Types.ObjectId(id) }).exec();
+    public static async getStepById(stepId: string): Promise<StepResource> {
+        let step = await Step.find({ id: new Types.ObjectId(stepId) }).exec();
         if (!step) {
-            throw new Error(`Step with ID ${id} not found`);
+            throw new Error(`Step with ID ${stepId} not found`);
         }
         return this.getStepAsStepResource(step);
     }

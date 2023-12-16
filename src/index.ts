@@ -20,7 +20,7 @@ async function setup() {
         const mongo = await MMS.MongoMemoryServer.create();
         mongodURI = mongo.getUri();
     }
-
+    console.log("URI", process.env.DB_CONNECTION_STRING);
     logger.info(`Connect to mongod at ${mongodURI}`)
     await mongoose.connect(mongodURI);
 

@@ -46,51 +46,6 @@ export const stepRouter = express.Router();
  * tags:
  *   name: Steps
  *   description: The Steps managing API
- * /api/v0/steps/user/{userId}:
- *   get:
- *     summary: Lists all the steps by user
- *     tags: [Steps]
- *     parameters:
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *         required: true
- *         description: The user id
- *     responses:
- *       200:
- *         description: The list of the steps
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Step'
- *
- */
-stepRouter.get("/user/:userId",
-    param('userId').isString(),
-    async (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        const id = req.params?.userId;
-        try {
-            const steps = await StepService.getStepsCreatedByUser(id);
-            res.send(steps);
-        } catch (err) {
-            res.status(404);
-            next(err);
-        }
-    })
-
-
-/**
- * @swagger
- * tags:
- *   name: Steps
- *   description: The Steps managing API
  * /api/v0/steps:
  *   get:
  *     summary: Lists all the steps
@@ -324,3 +279,48 @@ stepRouter.delete("/:id",
             next(err);
         }
     })
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Steps
+ *   description: The Steps managing API
+ * /api/v0/steps/user/{userId}:
+ *   get:
+ *     summary: Lists all the steps by user
+ *     tags: [Steps]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user id
+ *     responses:
+ *       200:
+ *         description: The list of the steps
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Step'
+ *
+ */
+stepRouter.get("/user/:userId",
+param('userId').isString(),
+async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    const id = req.params?.userId;
+    try {
+        const steps = await StepService.getStepsCreatedByUser(id);
+        res.send(steps);
+    } catch (err) {
+        res.status(404);
+        next(err);
+    }
+})
