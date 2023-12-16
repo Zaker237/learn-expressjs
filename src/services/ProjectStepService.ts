@@ -44,11 +44,16 @@ export default class ProjectStepService {
         const projectStep= await ProjectStep.find({
             projectId: new Types.ObjectId(projectId)
         }).exec();
-        const pStep = await ProjectStep.find({
+        const pStep = new ProjectStep({
             projectId: new Types.ObjectId(projectId),
             stepId: new Types.ObjectId(stepId),
             position: projectStep.length + 1
-        }).exec();
+        });
+        try {
+            await pStep.save();
+        } catch (error) {
+            throw Error("An error occurs");
+        }
     }
 
     public static async removeStepFromProject(projectId: string, stepId: string): Promise<void> {
@@ -67,7 +72,7 @@ export default class ProjectStepService {
             stepId: new Types.ObjectId(stepId)
         }).exec();
         if (!projectStep) {
-            throw new Error("The Step is already in the project.");
+            throw new Error("The Step is not in the project.");
         }
     }
 
