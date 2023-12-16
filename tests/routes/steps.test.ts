@@ -27,7 +27,7 @@ test("/api/v0/steps/ get alle, 7 stes", async () => {
             createdBy: idUser!,
             name: `name${i}`,
             description:  `description${i}`
-        })
+        });
     }
     const testee = supertest(app);
     const response = await testee.get(`/api/v0/steps/`);
@@ -43,7 +43,7 @@ test("/api/v0/steps/user/:userId get alle, 5 Users", async () => {
             createdBy: idUser!,
             name: `name${i}`,
             description:  `description${i}`
-        })
+        });
     }
     const testee = supertest(app);
     const response = await testee.get(`/api/v0/steps/user/${idUser}`);
@@ -59,7 +59,7 @@ test("/api/v0/steps/user/:userId get alle, badId", async () => {
             createdBy: idUser,
             name: `name${i}`,
             description:  `description${i}`
-        })
+        });
     }
     const testee = supertest(app);
     const response = await testee.get(`/api/v0/steps/user/bad-id`);
@@ -68,16 +68,16 @@ test("/api/v0/steps/user/:userId get alle, badId", async () => {
 
 
 test("/api/v0/steps/:id get step by id", async () => {
-    var newStep = await StepService.createStep({
+    const newStep = await StepService.createStep({
         createdBy: idUser,
-        name: "name22",
+        name: "namefe22",
         description: "description22",
-    })
+    });
+    const allSteps = await StepService.getAllSteps();
+    expect(allSteps.length).toBe(1);
     const testee = supertest(app);
     const response = await testee.get(`/api/v0/steps/${newStep.id!}`);
-    const allSteps = await StepService.getAllSteps()
     expect(response.statusCode).toBe(200);
-    expect(allSteps.length).toBe(1);
 });
 
 
@@ -86,7 +86,7 @@ test("/api/v0/steps/:id get badId", async () => {
         createdBy: idUser,
         name: "name3",
         description: "description3",
-    })
+    });
     const testee = supertest(app);
     const response = await testee.get(`/api/v0/steps/id-does-not-exists`);
     expect(response.statusCode).toBe(404);
@@ -98,7 +98,7 @@ test("/api/v0/steps/:id delete step by id", async () => {
         createdBy: idUser,
         name: "name4",
         description: "description4",
-    })
+    });
     const testee = supertest(app);
     const steps = await StepService.getAllSteps()
     expect(steps.length).toBe(1);
@@ -114,7 +114,7 @@ test("/api/v0/steps/:id delete step by badId", async () => {
         createdBy: idUser,
         name: "name4",
         description: "description4",
-    })
+    });
     const testee = supertest(app);
     const steps = await StepService.getAllSteps()
     expect(steps.length).toBe(1);
@@ -129,7 +129,7 @@ test("/api/v0/steps/ add step", async () => {
         createdBy: idUser,
         name: "name5",
         description: "description5",
-    })
+    });
     const allStep = await StepService.getAllSteps();
     expect(response.statusCode).toBe(200);
     expect(allStep.length).toBe(1);
@@ -142,7 +142,7 @@ test("/api/v0/steps/ add step bad user ID", async () => {
         createdBy: "jhdvblksfjd",
         name: "name6",
         description: "description6",
-    })
+    });
     expect(response.statusCode).toBe(404);
 });
 
@@ -153,8 +153,7 @@ test("/api/v0/steps/ add step with an existing name", async () => {
         createdBy: idUser,
         name: "name5",
         description: "description5",
-    })
-
+    });
     const response = await testee.post(`/api/v0/steps/`).send({
         createdBy: idUser,
         name: "name5",
@@ -169,14 +168,14 @@ test("/api/v0/steps/:id update user", async () => {
         createdBy: idUser,
         name: "name6",
         description: "description6",
-    })
+    });
     const testee = supertest(app);
     const response = await testee.put(`/api/v0/steps/${newStep.id}`).send({
         id: newStep.id!,
         createdBy: idUser,
         name: "name66",
         description: "description6",
-    })
+    });
     expect(response.statusCode).toBe(200);
     expect(response.body).toBeDefined();
     expect(response.body.name).toBe("name66");
