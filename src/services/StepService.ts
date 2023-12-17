@@ -1,10 +1,10 @@
-import { IStep, Step } from "../models/StepModel";
+import { Step } from "../models/StepModel";
 import { StepResource } from "../resources/";
-import mongoose, { Types } from "mongoose";
-// import { dateToString, stringToDate } from "./ServiceHelper";
-// import { ExceptionHandler } from "winston";
+import { Types } from "mongoose";
 import { User } from "../models/UserModel";
-// import { Card } from "../models/CardModel";
+import { Project } from "../models/ProjectModel";
+import ProjectService from "./ProjectService";
+import ProjectStepService from "./ProjectStepService";
 
 
 export default class StepService {
@@ -27,6 +27,23 @@ export default class StepService {
         const steps = await Step.find({
             createdBy: new Types.ObjectId(userId)
         }).exec();
+
+        const stepResponse: StepResource[] = [];
+        for (const step of steps) {
+            const resource = this.getStepAsStepResource(step);
+            stepResponse.push(resource)
+        }
+
+        return stepResponse;
+    }
+
+    public static async getStepsCreatedByProject(projectId: string): Promise<StepResource[]> {
+        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        if (!project) {
+            throw new Error(`User with ID ${projectId} not found`);
+        }
+
+        const steps = await ProjectStepService.getAllStepsInProject(projectId);
 
         const stepResponse: StepResource[] = [];
         for (const step of steps) {

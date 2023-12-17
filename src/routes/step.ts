@@ -1,5 +1,6 @@
 import express from "express";
 import StepService from "../services/StepService";
+import ProjectStepService from "../services/ProjectStepService";
 import { StepResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
 
@@ -71,6 +72,52 @@ stepRouter.get("/", async (req, res, next) => {
         next(err);
     }
 })
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Steps
+ *   description: The Steps managing API
+ * /api/v0/steps:
+ *   get:
+ *     summary: Lists all the steps
+ *     tags: [Steps]
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The project id
+ *     responses:
+ *       200:
+ *         description: The list of the steps
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Step'
+ *
+ */
+stepRouter.get("/project/:projectId",
+    param('projectId').isString(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const id = req.params?.ProjectId;
+        try {
+            let steps: StepResource[] = await StepService.getStepsCreatedByProject(id);
+            res.status(200)
+            res.send(steps)
+        } catch (err) {
+            res.status(404);
+            next(err);
+        }
+    })
 
 
 /**
@@ -238,30 +285,30 @@ stepRouter.put("/:id",
     })
 
 
-    /**
- * @swagger
- * tags:
- *   name: Steps
- *   description: The Steps managing API
- * /api/v0/steps/{id}:
- *  delete:
- *     summary: Remove the step by id
- *     tags: [Steps]
- *     parameters:
- *       - in: path
- *         name: id
- *         schema:
- *           type: string
- *         required: true
- *         description: The step id
- *
- *     responses:
- *       200:
- *         description: The step was deleted
- *       404:
- *         description: The step was not found
- *
- */
+/**
+* @swagger
+* tags:
+*   name: Steps
+*   description: The Steps managing API
+* /api/v0/steps/{id}:
+*  delete:
+*     summary: Remove the step by id
+*     tags: [Steps]
+*     parameters:
+*       - in: path
+*         name: id
+*         schema:
+*           type: string
+*         required: true
+*         description: The step id
+*
+*     responses:
+*       200:
+*         description: The step was deleted
+*       404:
+*         description: The step was not found
+*
+*/
 stepRouter.delete("/:id",
     param('id').isString(),
     async (req, res, next) => {
@@ -309,18 +356,18 @@ stepRouter.delete("/:id",
  *
  */
 stepRouter.get("/user/:userId",
-param('userId').isString(),
-async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-    }
-    const id = req.params?.userId;
-    try {
-        const steps = await StepService.getStepsCreatedByUser(id);
-        res.send(steps);
-    } catch (err) {
-        res.status(404);
-        next(err);
-    }
-})
+    param('userId').isString(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const id = req.params?.userId;
+        try {
+            const steps = await StepService.getStepsCreatedByUser(id);
+            res.send(steps);
+        } catch (err) {
+            res.status(404);
+            next(err);
+        }
+    })
