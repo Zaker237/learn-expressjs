@@ -62,9 +62,9 @@ test('Genereller Test', async () => {
     };
     const comment = new Comment(comment1);
     await comment.save();
-    let result: any = await Project.findOne({ text: "Text1" });
-    expect(result).toBeInstanceOf(Card);
-    expect(result.title).toBe(comment.text);
+    let result: any = await Comment.findOne({ text: "Text1" });
+    expect(result).toBeInstanceOf(Comment);
+    expect(result.text).toBe(comment.text);
 });
 
 
@@ -86,7 +86,6 @@ test('without user', async () => {
 test('without card', async () => {
     let comment1 = {
         createdBy: idUser,
-        belongTo: idCard,
         text: "Comment2"
     };
     try{
