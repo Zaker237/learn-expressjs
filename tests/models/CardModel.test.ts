@@ -56,7 +56,7 @@ test('Genereller Test', async () => {
     };
     const card = new Card(card1);
     await card.save();
-    let result: any = await Project.findOne({ title: "Card1" });
+    let result: any = await Card.findOne({ title: "Card1" });
     expect(result).toBeInstanceOf(Card);
     expect(result.title).toBe(card.title);
 });
@@ -76,7 +76,7 @@ test('without user', async () => {
     }catch(e){
 
     }
-    let result: any = await Project.findOne({ title: "Card1" });
+    let result: any = await Card.findOne({ title: "Card1" });
     expect(result).toBeFalsy();
 });
 
@@ -94,7 +94,7 @@ test('without project', async () => {
     }catch(e){
 
     }
-    let result: any = await Project.findOne({ title: "Card1" });
+    let result: any = await Card.findOne({ title: "Card1" });
     expect(result).toBeFalsy();
 });
 
@@ -112,7 +112,7 @@ test('without step', async () => {
     }catch(e){
 
     }
-    let result: any = await Project.findOne({ title: "Card1" });
+    let result: any = await Card.findOne({ title: "Card1" });
     expect(result).toBeFalsy();
 });
 
