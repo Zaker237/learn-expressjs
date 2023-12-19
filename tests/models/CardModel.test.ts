@@ -47,7 +47,7 @@ beforeEach(async () => {
 test('Genereller Test', async () => {
     let card1 = {
         createdBy: idUser,
-        asignTo: idProject,
+        asignTo: idUser,
         belongTo: idProject,
         inStep: idStep,
         title: "Card1",
@@ -82,7 +82,7 @@ test('without user', async () => {
 test('without project', async () => {
     let card1 = {
         createdBy: idUser,
-        asignTo: idProject,
+        asignTo: idUser,
         inStep: idStep,
         title: "Card1",
         description: "description"
@@ -100,7 +100,7 @@ test('without project', async () => {
 test('without step', async () => {
     let card1 = {
         createdBy: idUser,
-        asignTo: idProject,
+        asignTo: idUser,
         belongTo: idProject,
         title: "Card1",
         description: "description"
@@ -119,7 +119,7 @@ test('without step', async () => {
 test('without title', async () => {
     let card1 = {
         createdBy: idUser,
-        asignTo: idProject,
+        asignTo: idUser,
         belongTo: idProject,
         inStep: idStep,
         description: "description"
