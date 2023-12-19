@@ -10,7 +10,7 @@ export const cardRouter = express.Router();
  * @swagger
  * components:
  *   schemas:
- *     card:
+ *     Card:
  *       type: object
  *       required:
  *         - createdBy
@@ -106,7 +106,7 @@ cardRouter.get("/user/:userId",
  * tags:
  *   name: Cards
  *   description: The Cards managing API
- * /api/v0/cards/{projectId}:
+ * /api/v0/cards/project/{projectId}:
  *   get:
  *     summary: Lists all the cards filter by project
  *     tags: [Cards]
@@ -128,7 +128,7 @@ cardRouter.get("/user/:userId",
  *                 $ref: '#/components/schemas/Card'
  *
  */
-cardRouter.get("/:projectId",
+cardRouter.get("/project/:projectId",
     param('projectId').isString(),
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -151,7 +151,7 @@ cardRouter.get("/:projectId",
  * tags:
  *   name: Cards
  *   description: The Cards managing API
- * /api/v0/cards/{projectId}/{stepId}:
+ * /api/v0/cards/project/{projectId}/step/{stepId}:
  *   get:
  *     summary: Lists all the cards filter by project and step
  *     tags: [Cards]
@@ -179,7 +179,7 @@ cardRouter.get("/:projectId",
  *                 $ref: '#/components/schemas/Card'
  *
  */
-cardRouter.get("/:projectId/:stepId",
+cardRouter.get("/project/:projectId/step/:stepId",
     param('projectId').isString(),
     param('stepId').isString(),
     async (req, res, next) => {
@@ -204,7 +204,7 @@ cardRouter.get("/:projectId/:stepId",
  * tags:
  *   name: Cards
  *   description: The Cards managing API
- * /api/v0/commets:
+ * /api/v0/cards:
  *   get:
  *     summary: Lists all the cards
  *     tags: [Cards]

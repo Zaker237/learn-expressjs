@@ -116,7 +116,7 @@ projectRouter.get("/user/:userId",
  * tags:
  *   name: Projects
  *   description: The Projects managing API
- * /api/v0/commets:
+ * /api/v0/projects:
  *   get:
  *     summary: Lists all the projects
  *     tags: [Projects]
@@ -231,7 +231,7 @@ projectRouter.post("/",
         try {
             const body = req.body
             let newProject: ProjectResource = {
-                owner: body.createdBy,
+                owner: body.owner,
                 name: body.name,
                 startAt: body.startAt,
                 endsAt: body.endsAt,

@@ -92,7 +92,7 @@ commentRouter.get("/user/:userId",
  * tags:
  *   name: Comments
  *   description: The Comments managing API
- * /api/v0/commets:
+ * /api/v0/comments:
  *   get:
  *     summary: Lists all the comments
  *     tags: [Comments]

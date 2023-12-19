@@ -79,7 +79,7 @@ stepRouter.get("/", async (req, res, next) => {
  * tags:
  *   name: Steps
  *   description: The Steps managing API
- * /api/v0/steps:
+ * /api/v0/steps/project/{projectId}:
  *   get:
  *     summary: Lists all the steps
  *     tags: [Steps]
@@ -108,7 +108,7 @@ stepRouter.get("/project/:projectId",
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const id = req.params?.ProjectId;
+        const id = req.params?.projectId;
         try {
             let steps: StepResource[] = await StepService.getStepsCreatedByProject(id);
             res.status(200)

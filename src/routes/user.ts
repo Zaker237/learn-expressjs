@@ -44,6 +44,7 @@ export const userRouter = express.Router();
  *           description: The date the User was added
  *       example:
  *         id: kjdvbdvd-fbf-vbfdb-fdb
+ *         username: Zaker
  *         firstname: Alex
  *         lastname: Walker
  *         email: mboutchouangalex@gmail.com
