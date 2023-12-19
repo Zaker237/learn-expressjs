@@ -1,6 +1,5 @@
 import { Step } from "../../src/models/StepModel";
 import { User } from "../../src/models/UserModel";
-import mongoose from "mongoose";
 
 test('Genereller Test', async () => {
     let user1 = {

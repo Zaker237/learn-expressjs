@@ -2,7 +2,6 @@ import { Project } from "../../src/models/ProjectModel";
 import { User } from "../../src/models/UserModel";
 import { Step } from "../../src/models/StepModel";
 import { ProjectStep } from "../../src/models/ProjectStepModel";
-import mongoose from "mongoose";
 
 let idProject: string;
 let idStep: string;

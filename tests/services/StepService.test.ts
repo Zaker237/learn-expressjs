@@ -1,6 +1,4 @@
 import {StepResource} from "../../src/resources";
-import {User} from "../../src/models/UserModel";
-import {Step} from "../../src/models/StepModel";
 import UserService from "../../src/services/UserService";
 import StepService from "../../src/services/StepService";
 
@@ -54,4 +52,9 @@ test('should delete Step', async () => {
     const result = await StepService.createStep(step4);
     expect(result.name).toEqual(step4.name);
     expect(async () => await StepService.deleteStep(result.id!)).resolves;
+});
+
+
+test('should not delete Step: bad Id', async () => {
+    expect(async () => await StepService.deleteStep("this-id-does-not-exist")).resolves;
 });

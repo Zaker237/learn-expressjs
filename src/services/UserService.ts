@@ -1,6 +1,5 @@
-import { IUser, User } from "../models/UserModel";
+import { User } from "../models/UserModel";
 import { UserResource } from "../resources/";
-import mongoose, { Types } from "mongoose";
 
 
 export default class UserService {

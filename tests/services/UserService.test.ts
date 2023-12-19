@@ -1,5 +1,4 @@
 import {UserResource} from "../../src/resources";
-import {User} from "../../src/models/UserModel";
 import UserService from "../../src/services/UserService";
 
 

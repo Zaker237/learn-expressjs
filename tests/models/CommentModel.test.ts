@@ -3,7 +3,6 @@ import { User } from "../../src/models/UserModel";
 import { Card } from "../../src/models/CardModel";
 import { Step } from "../../src/models/StepModel";
 import { Comment } from "../../src/models/CommentModel";
-import mongoose from "mongoose";
 
 let idUser: string;
 let idCard: string;

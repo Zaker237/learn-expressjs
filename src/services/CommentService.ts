@@ -1,6 +1,6 @@
-import { IComment, Comment } from "../models/CommentModel";
+import { Comment } from "../models/CommentModel";
 import { CommentResource } from "../resources/";
-import mongoose, { Types } from "mongoose";
+import { Types } from "mongoose";
 import { User } from "../models/UserModel";
 import { Card } from "../models/CardModel";
 

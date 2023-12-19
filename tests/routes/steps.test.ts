@@ -3,7 +3,6 @@ import supertest from "supertest";
 import app from "../../src/app";
 import UserService from "../../src/services/UserService";
 import StepService from "../../src/services/StepService";
-import {request} from "http";
 
 let idUser: string
 

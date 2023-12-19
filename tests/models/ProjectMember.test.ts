@@ -1,7 +1,6 @@
 import { Project } from "../../src/models/ProjectModel";
 import { User } from "../../src/models/UserModel";
 import { ProjectMember } from "../../src/models/ProjectMemberModel";
-import mongoose from "mongoose";
 
 let idUser: string;
 let idProject: string;

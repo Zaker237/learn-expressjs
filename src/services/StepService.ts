@@ -3,7 +3,6 @@ import { StepResource } from "../resources/";
 import { Types } from "mongoose";
 import { User } from "../models/UserModel";
 import { Project } from "../models/ProjectModel";
-import ProjectService from "./ProjectService";
 import ProjectStepService from "./ProjectStepService";
 
 

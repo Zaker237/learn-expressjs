@@ -1,7 +1,5 @@
-/* istanbul ignore file */
-
 import dotenv from "dotenv";
-dotenv.config() // read ".env"
+dotenv.config()
 
 import http from "http";
 import mongoose from 'mongoose';

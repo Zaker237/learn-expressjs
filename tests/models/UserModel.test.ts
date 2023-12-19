@@ -1,5 +1,4 @@
 import { User } from "../../src/models/UserModel";
-import mongoose from "mongoose";
 
 test('Genereller Test', async () => {
     let test = {

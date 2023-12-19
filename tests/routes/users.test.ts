@@ -2,7 +2,6 @@
 import supertest from "supertest";
 import app from "../../src/app";
 import UserService from "../../src/services/UserService";
-import {request} from "http";
 
 
 test("/api/v0/users/ get alle, 5 Users", async () => {

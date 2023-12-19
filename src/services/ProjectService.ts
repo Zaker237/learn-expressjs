@@ -1,10 +1,7 @@
-import { IProject, Project } from "../models/ProjectModel";
+import { Project } from "../models/ProjectModel";
 import { ProjectResource } from "../resources/";
-import mongoose, { Types } from "mongoose";
-// import { dateToString, stringToDate } from "./ServiceHelper";
-// import { ExceptionHandler } from "winston";
+import { Types } from "mongoose";
 import { User } from "../models/UserModel";
-// import { Card } from "../models/CardModel";
 
 
 export default class ProjectService {

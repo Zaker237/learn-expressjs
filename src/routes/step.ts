@@ -1,6 +1,5 @@
 import express from "express";
 import StepService from "../services/StepService";
-import ProjectStepService from "../services/ProjectStepService";
 import { StepResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
 
