@@ -17,7 +17,7 @@ export default class CommentService {
     }
 
     public static async getCommentsCreatedByUser(userId: string): Promise<CommentResource[]> {
-        let user = await User.find({ id: new Types.ObjectId(userId) }).exec();
+        let user = await User.findById(userId).exec();
         if (!user) {
             throw new Error(`User with ID ${userId} not found`);
         }
@@ -33,7 +33,7 @@ export default class CommentService {
     }
 
     public static async getCommentsBelongToCard(cardId: string): Promise<CommentResource[]> {
-        let card = await Card.find({ id: new Types.ObjectId(cardId) }).exec();
+        let card = await Card.findById(cardId).exec();
         if (!card) {
             throw new Error(`Card with ID ${cardId} not found`);
         }
@@ -49,7 +49,7 @@ export default class CommentService {
     }
 
     public static async getCommentById(id: string): Promise<CommentResource> {
-        let comment = await Comment.find({ id: new Types.ObjectId(id) }).exec();
+        let comment = await Comment.findById(id).exec();
         if (!comment) {
             throw new Error(`Comment with ID ${id} not found`);
         }
@@ -57,11 +57,11 @@ export default class CommentService {
     }
 
     public static async createComment(comment: CommentResource): Promise<CommentResource> {
-        let user = await User.find({ id: new Types.ObjectId(comment.createdBy) }).exec();
+        let user = await User.findById(comment.createdBy).exec();
         if (!user) {
             throw new Error(`User with ID ${comment.createdBy} not found`);
         }
-        let card = await Card.find({ id: new Types.ObjectId(comment.belongTo) }).exec();
+        let card = await Card.findById(comment.belongTo).exec();
         if (!card) {
             throw new Error(`Card with ID ${comment.belongTo} not found`);
         }
@@ -79,7 +79,7 @@ export default class CommentService {
     }
 
     public static async updateComment(comment: CommentResource): Promise<CommentResource> {
-        let user = await User.find({ id: new Types.ObjectId(comment.createdBy) }).exec();
+        let user = await User.findById(comment.createdBy).exec();
         if (!user) {
             throw new Error(`User with ID ${comment.createdBy} not found`);
         }
@@ -87,7 +87,7 @@ export default class CommentService {
         if (!existingComment) {
             throw new Error("The step does not exist");
         }
-        let card = await Card.find({ id: new Types.ObjectId(comment.belongTo) }).exec();
+        let card = await Card.findById(comment.belongTo).exec();
         if (!card) {
             throw new Error(`Catd with ID ${comment.belongTo} not found`);
         }

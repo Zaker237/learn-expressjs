@@ -15,11 +15,11 @@ export default class UserService {
     }
 
     public static async getUserById(id: string): Promise<UserResource> {
-        let user = await User.find({ id: new Types.ObjectId(id) }).exec();
+        let user = await User.findById(id).exec();
         if (!user) {
             throw new Error(`User with ID ${id} not found`);
         }
-        return this.getUserAsUserResource(User);
+        return this.getUserAsUserResource(user);
     }
 
     public static async createUser(user: UserResource): Promise<UserResource> {

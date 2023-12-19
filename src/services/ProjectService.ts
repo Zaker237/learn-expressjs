@@ -19,7 +19,7 @@ export default class ProjectService {
     }
 
     public static async getProjectsCreatedByUser(userId: string): Promise<ProjectResource[]> {
-        let user = await User.find({ id: new Types.ObjectId(userId) }).exec();
+        let user = await User.findById(userId).exec();
         if (!user) {
             throw new Error(`User with ID ${userId} not found`);
         }
@@ -36,7 +36,7 @@ export default class ProjectService {
     }
 
     public static async getProjectById(id: string): Promise<ProjectResource> {
-        let project = await Project.find({ id: new Types.ObjectId(id) }).exec();
+        let project = await Project.findById(id).exec();
         if (!project) {
             throw new Error(`Project with ID ${id} not found`);
         }
@@ -44,7 +44,7 @@ export default class ProjectService {
     }
 
     public static async createProject(project: ProjectResource): Promise<ProjectResource> {
-        let user = await User.find({ id: new Types.ObjectId(project.owner) }).exec();
+        let user = await User.findById(project.owner).exec();
         if (!user) {
             throw new Error(`User with ID ${project.owner} not found`);
         }
@@ -67,7 +67,7 @@ export default class ProjectService {
     }
 
     public static async updateProject(project: ProjectResource): Promise<ProjectResource> {
-        let user = await User.find({ id: new Types.ObjectId(project.owner) }).exec();
+        let user = await User.findById(project.owner).exec();
         const existingProject = await Project.findById(project.id).exec();
         if (!existingProject) {
             throw new Error("The Project does not exist");

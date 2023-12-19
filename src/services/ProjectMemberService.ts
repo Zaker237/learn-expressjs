@@ -8,7 +8,7 @@ import UserService from "./UserService";
 
 export default class ProjectMemberService {
     public static async getAllMembersInProject(projectId: string): Promise<UserResource[]> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
@@ -24,12 +24,12 @@ export default class ProjectMemberService {
     }
 
     public static async addMemberToProject(projectId: string, userId: string, admin?: boolean): Promise<void> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
 
-        let user = await User.find({ id: new Types.ObjectId(userId) }).exec();
+        let user = await User.findById(userId).exec();
         if (!user) {
             throw new Error(`User with ID ${userId} not found`);
         }
@@ -54,12 +54,12 @@ export default class ProjectMemberService {
     }
 
     public static async removeMemberFromProject(projectId: string, userId: string): Promise<void> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
 
-        let user = await User.find({ id: new Types.ObjectId(userId) }).exec();
+        let user = await User.findById(userId).exec();
         if (!user) {
             throw new Error(`User with ID ${userId} not found`);
         }
@@ -74,12 +74,12 @@ export default class ProjectMemberService {
     }
 
     public static async updatePositionOfMemberInProject(projectId: string, userId: string, admin?: boolean): Promise<void> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
 
-        let user = await User.find({ id: new Types.ObjectId(userId) }).exec();
+        let user = await User.findById(userId).exec();
         if (!user) {
             throw new Error(`User with ID ${userId} not found`);
         }

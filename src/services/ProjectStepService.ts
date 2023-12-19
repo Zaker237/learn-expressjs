@@ -8,7 +8,7 @@ import StepService from "./StepService";
 
 export default class ProjectStepService {
     public static async getAllStepsInProject(projectId: string): Promise<StepResource[]> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
@@ -24,12 +24,12 @@ export default class ProjectStepService {
     }
 
     public static async addStepToProject(projectId: string, stepId: string): Promise<void> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
 
-        let step = await Step.find({ id: new Types.ObjectId(stepId) }).exec();
+        let step = await Step.findById(stepId).exec();
         if (!step) {
             throw new Error(`Step with ID ${stepId} not found`);
         }
@@ -57,12 +57,12 @@ export default class ProjectStepService {
     }
 
     public static async removeStepFromProject(projectId: string, stepId: string): Promise<void> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
 
-        let step = await Step.find({ id: new Types.ObjectId(stepId) }).exec();
+        let step = await Step.findById(stepId).exec();
         if (!step) {
             throw new Error(`Step with ID ${stepId} not found`);
         }
@@ -77,12 +77,12 @@ export default class ProjectStepService {
     }
 
     public static async updatePositionOfStepInProject(projectId: string, stepId: string, newPos: number): Promise<void> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
 
-        let step = await Step.find({ id: new Types.ObjectId(stepId) }).exec();
+        let step = await Step.findById(stepId).exec();
         if (!step) {
             throw new Error(`Step with ID ${stepId} not found`);
         }

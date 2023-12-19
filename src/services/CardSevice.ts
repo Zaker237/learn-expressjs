@@ -20,7 +20,7 @@ export default class CardService {
     }
 
     public static async getCardsCreatedByUser(userId: string): Promise<CardResource[]> {
-        let user = await User.find({ id: new Types.ObjectId(userId) }).exec();
+        let user = await User.findById(userId).exec();
         if (!user) {
             throw new Error(`User with ID ${userId} not found`);
         }
@@ -37,7 +37,7 @@ export default class CardService {
     }
 
     public static async getCardsByProjectId(projectId: string): Promise<CardResource[]> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
@@ -54,11 +54,11 @@ export default class CardService {
     }
 
     public static async getCardsByProjectIdAndStepId(projectId: string, stepId: string): Promise<CardResource[]> {
-        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
         }
-        let step = await Step.find({ id: new Types.ObjectId(stepId) }).exec();
+        let step = await Step.findById(stepId).exec();
         if (!step) {
             throw new Error(`Step with ID ${stepId} not found`);
         }
@@ -76,7 +76,7 @@ export default class CardService {
     }
 
     public static async getCardById(id: string): Promise<CardResource> {
-        let card = await Card.find({ id: new Types.ObjectId(id) }).exec();
+        let card = await Card.findById(id).exec();
         if (!card) {
             throw new Error(`Card with ID ${id} not found`);
         }
@@ -84,19 +84,19 @@ export default class CardService {
     }
 
     public static async createCard(card: CardResource): Promise<CardResource> {
-        let user = await User.find({ id: new Types.ObjectId(card.createdBy) }).exec();
+        let user = await User.findById(card.createdBy).exec();
         if (!user) {
             throw new Error(`User with ID ${card.createdBy} not found`);
         }
-        let member = await User.find({ id: new Types.ObjectId(card.asignTo) }).exec();
+        let member = await User.findById(card.asignTo).exec();
         if (!member) {
             throw new Error(`Member with ID ${card.createdBy} not found`);
         }
-        let project = await Project.find({ id: new Types.ObjectId(card.belongTo) }).exec();
+        let project = await Project.findById(card.belongTo).exec();
         if (!project) {
             throw new Error(`Project with ID ${card.createdBy} not found`);
         }
-        let step = await Step.find({ id: new Types.ObjectId(card.inStep) }).exec();
+        let step = await Step.findById(card.inStep).exec();
         if (!step) {
             throw new Error(`Step with ID ${card.createdBy} not found`);
         }
@@ -122,19 +122,19 @@ export default class CardService {
     }
 
     public static async updateCard(card: CardResource): Promise<CardResource> {
-        let user = await User.find({ id: new Types.ObjectId(card.createdBy) }).exec();
+        let user = await User.findById(card.createdBy).exec();
         if (!user) {
             throw new Error(`User with ID ${card.createdBy} not found`);
         }
-        let member = await User.find({ id: new Types.ObjectId(card.asignTo) }).exec();
+        let member = await User.findById(card.asignTo).exec();
         if (!member) {
             throw new Error(`Member with ID ${card.createdBy} not found`);
         }
-        let project = await Project.find({ id: new Types.ObjectId(card.belongTo) }).exec();
+        let project = await Project.findById(card.belongTo).exec();
         if (!project) {
             throw new Error(`Project with ID ${card.createdBy} not found`);
         }
-        let step = await Step.find({ id: new Types.ObjectId(card.inStep) }).exec();
+        let step = await Step.findById(card.inStep).exec();
         if (!step) {
             throw new Error(`Step with ID ${card.createdBy} not found`);
         }

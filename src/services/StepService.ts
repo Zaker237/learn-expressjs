@@ -55,7 +55,7 @@ export default class StepService {
     }
 
     public static async getStepById(stepId: string): Promise<StepResource> {
-        let step = await Step.find({ id: new Types.ObjectId(stepId) }).exec();
+        let step = await Step.findById(stepId).exec();
         if (!step) {
             throw new Error(`Step with ID ${stepId} not found`);
         }
@@ -63,7 +63,7 @@ export default class StepService {
     }
 
     public static async createStep(step: StepResource): Promise<StepResource> {
-        let user = await User.find({ id: new Types.ObjectId(step.createdBy) }).exec();
+        let user = await User.findById(step.createdBy).exec();
         if (!user) {
             throw new Error(`User with ID ${step.createdBy} not found`);
         }
@@ -81,7 +81,7 @@ export default class StepService {
     }
 
     public static async updateStep(step: StepResource): Promise<StepResource> {
-        let user = await User.find({ id: new Types.ObjectId(step.createdBy) }).exec();
+        let user = await User.findById(step.createdBy).exec();
         const existingStep = await Step.findById(step.id).exec();
         if (!existingStep) {
             throw new Error("The step does not exist");
