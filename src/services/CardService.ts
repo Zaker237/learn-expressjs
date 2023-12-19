@@ -88,7 +88,7 @@ export default class CardService {
         }
         let member = await User.findById(card.asignTo).exec();
         if (!member) {
-            throw new Error(`Member with ID ${card.createdBy} not found`);
+            throw new Error(`Member with ID ${card.asignTo} not found`);
         }
         let project = await Project.findById(card.belongTo).exec();
         if (!project) {

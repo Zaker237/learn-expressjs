@@ -29,6 +29,25 @@ test('should create a new Step', async () => {
     expect(result.name).toEqual(step2.name);
 });
 
+test('should get a Step by its id', async () => {
+    const user = await UserService.createUser(user1);
+    const step2: StepResource = {
+        createdBy: user.id!,
+        name: "step2",
+        description: "description"
+    };
+    const result = await StepService.createStep(step2);
+    const step = await StepService.getStepById(result.id!);
+    expect(result.name).toEqual(step2.name);
+    expect(step.name).toEqual(result.name);
+    expect(step.name).toEqual(step2.name);
+});
+
+
+test('should not get Step by id: bad id', async () => {
+    expect(async () => await StepService.getStepById("invaldid-id")).rejects;
+});
+
 
 test('should create a step with same name', async () => {
     const user = await UserService.createUser(user1);

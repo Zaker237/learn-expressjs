@@ -11,6 +11,30 @@ const user1 = {
 };
 
 
+test('should get Project by id', async () => {
+    const user = await UserService.createUser(user1);
+    const project1: ProjectResource = {
+        owner: user.id!,
+        name: "Project1",
+        description: "description1",
+        startAt: new Date(),
+        endsAt: new Date(),
+        public: false,
+        closed: false,
+        githublink: "",
+    };
+    const result = await ProjectService.createProject(project1);
+    const project = await ProjectService.getProjectById(result.id!);
+    expect(result.name).toEqual(project.name);
+    expect(project.name).toEqual(project1.name);
+});
+
+
+test('should not get Project by id: bad id', async () => {
+    expect(async () => await ProjectService.getProjectById("invaldid-id")).rejects;
+});
+
+
 test('should create a new Project', async () => {
     const user = await UserService.createUser(user1);
     const project1: ProjectResource = {
