@@ -1,5 +1,5 @@
 import express from "express";
-import CardService from "../services/CardSevice";
+import CardService from "../services/CardService";
 import { CardResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
 
