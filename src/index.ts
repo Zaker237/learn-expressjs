@@ -21,7 +21,7 @@ async function setup() {
         mongodURI = mongo.getUri();
     }
     console.log("URI", process.env.DB_CONNECTION_STRING);
-    logger.info(`Connect to mongod at ${mongodURI}`)
+    logger.info(`Connect to mongodb at ${mongodURI}`)
     await mongoose.connect(mongodURI);
 
     const port = process.env.HTTP_PORT ? parseInt(process.env.HTTP_PORT) : 3002;
