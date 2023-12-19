@@ -162,6 +162,6 @@ test('should delete Step', async () => {
 });
 
 
-test('should not delete Project: bad Id', async () => {
+test('should not delete card: bad Id', async () => {
     expect(async () => await CardService.deleteCard("this-id-does-not-exist")).resolves;
 });
