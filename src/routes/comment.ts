@@ -87,7 +87,7 @@ commentRouter.put("/:id",
     body('id').isString(),
     body('createdBy').isString(),
     body('belongTo').isString(),
-    body('text').isString().isLength({ min: 1, max: 1000 }),
+    body('text').isString(),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {

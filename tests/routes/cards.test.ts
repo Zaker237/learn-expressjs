@@ -199,7 +199,7 @@ test("/api/v0/cards/:id delete card by badId", async () => {
 });
 
 
-test("/api/v0/cards/ add project", async () => {
+test("/api/v0/cards/ add card", async () => {
     const testee = supertest(app);
     const response = await testee.post(`/api/v0/cards/`).send({
         createdBy: idUser,
@@ -209,9 +209,9 @@ test("/api/v0/cards/ add project", async () => {
         title: `Card3`,
         description: `description3`
     });
-    const allProject = await CardService.getAllCards();
+    const allCard = await CardService.getAllCards();
     expect(response.statusCode).toBe(200);
-    expect(allProject.length).toBe(1);
+    expect(allCard.length).toBe(1);
 });
 
 

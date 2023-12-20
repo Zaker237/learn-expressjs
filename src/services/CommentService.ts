@@ -70,7 +70,11 @@ export default class CommentService {
             belongTo: new Types.ObjectId(comment.belongTo),
             text: comment.text
         });
-        const existingComment = await Comment.findOne({ createdBy: newComment.createdBy, belongTo: newComment.belongTo }).exec()
+        const existingComment = await Comment.findOne({
+            createdBy: newComment.createdBy,
+            belongTo: newComment.belongTo,
+            text: newComment.text
+        }).exec()
         if (existingComment) {
             throw new Error("The Comment already exists.");
         }
