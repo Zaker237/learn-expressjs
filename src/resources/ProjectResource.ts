@@ -3,8 +3,8 @@ export type ProjectResource = {
     owner: string
     name: string
     description?: string
-    startAt: Date
-    endsAt: Date
+    startAt: string | Date
+    endsAt: string | Date
     public?: boolean
     closed?: boolean
     githublink?: string
