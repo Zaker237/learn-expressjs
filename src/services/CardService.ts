@@ -23,7 +23,7 @@ export default class CardService {
             throw new Error(`User with ID ${userId} not found`);
         }
         const cards = await Card.find({
-            owner: new Types.ObjectId(userId)
+            createdBy: new Types.ObjectId(userId)
         }).exec();
 
         const cardResponse: CardResource[] = [];
