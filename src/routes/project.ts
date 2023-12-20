@@ -58,12 +58,13 @@ projectRouter.get("/:id",
 
 projectRouter.post("/",
     body('owner').isString(),
-    body('name').isString().isLength({ min: 1, max: 100 }),
+    body('name').isString(),
     body('startAt').isDate(),
     body('endsAt').isDate(),
-    body('description').optional().isString().isLength({ min: 1, max: 1000 }),
+    body('description').optional().isString(),
     body('public').optional({values: false}).isBoolean(),
     body('closed').optional({values: false}).isBoolean(),
+    body('githublink').optional().isString(),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -76,10 +77,10 @@ projectRouter.post("/",
                 name: body.name,
                 startAt: body.startAt,
                 endsAt: body.endsAt,
-                description: body.description ? body.description : "",
+                description: body.description || "",
                 public: body.public,
                 closed: body.closed,
-                githublink: body.githublink
+                githublink: body.githublink || ""
             }
             let createdProject: ProjectResource = await ProjectService.createProject(newProject);
             res.status(200)
@@ -95,12 +96,13 @@ projectRouter.put("/:id",
     param('id').isString(),
     body('id').isString(),
     body('owner').isString(),
-    body('name').isString().isLength({ min: 1, max: 100 }),
+    body('name').isString(),
     body('startAt').isDate(),
     body('endsAt').isDate(),
-    body('description').optional().isString().isLength({ min: 1, max: 1000 }),
+    body('description').optional().isString(),
     body('public').optional({values: false}).isBoolean(),
     body('closed').optional({values: false}).isBoolean(),
+    body('githublink').optional().isString(),
     async (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
@@ -119,10 +121,10 @@ projectRouter.put("/:id",
                 name: body.name,
                 startAt: body.startAt,
                 endsAt: body.endsAt,
-                description: body.description ? body.description : "",
+                description: body.description || "",
                 public: body.public,
                 closed: body.closed,
-                githublink: body.githublink
+                githublink: body.githublink || ""
             }
             let updatedProject: ProjectResource = await ProjectService.updateProject(newProject);
             res.status(200)
