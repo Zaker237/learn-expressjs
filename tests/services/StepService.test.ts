@@ -2,10 +2,48 @@ import {StepResource} from "../../src/resources";
 import UserService from "../../src/services/UserService";
 import StepService from "../../src/services/StepService";
 
-const user1 = {
-    username: "username1", firstname: "firstname1", lastname: "lastname1",
-    email: "test1@email.test", googleId: "googleId"
-};
+let idUser: string
+
+beforeEach(async () => {
+    // create a user
+    const user = await UserService.createUser({
+        username: `username`,
+        firstname: `firstname`,
+        lastname: `lastname`,
+        email: `test@email.test`,
+        googleId: `googleId`,
+        admin: true
+    })
+    idUser = user.id!;
+})
+
+
+test("getAllSteps get alle", async () => {
+    for (let i = 1; i <= 6; i++) {
+        await StepService.createStep({
+            createdBy: idUser,
+            name: `step${i}`,
+            description: `description${i}`
+        });
+    }
+    const response = await StepService.getAllSteps();
+    expect(response).toBeInstanceOf(Array);
+    expect(response.length).toBe(6);
+});
+
+
+test("getStepsCreatedByUser get alle", async () => {
+    for (let i = 1; i <= 10; i++) {
+        await StepService.createStep({
+            createdBy: idUser,
+            name: `step${i}`,
+            description: `description${i}`
+        });
+    }
+    const response = await StepService.getStepsCreatedByUser(idUser);
+    expect(response).toBeInstanceOf(Array);
+    expect(response.length).toBe(10);
+});
 
 
 test('should not create a new Step', async () => {
@@ -19,9 +57,8 @@ test('should not create a new Step', async () => {
 
 
 test('should create a new Step', async () => {
-    const user = await UserService.createUser(user1);
     const step2: StepResource = {
-        createdBy: user.id!,
+        createdBy: idUser,
         name: "step2",
         description: "description"
     };
@@ -29,10 +66,10 @@ test('should create a new Step', async () => {
     expect(result.name).toEqual(step2.name);
 });
 
+
 test('should get a Step by its id', async () => {
-    const user = await UserService.createUser(user1);
     const step2: StepResource = {
-        createdBy: user.id!,
+        createdBy: idUser,
         name: "step2",
         description: "description"
     };
@@ -50,9 +87,8 @@ test('should not get Step by id: bad id', async () => {
 
 
 test('should create a step with same name', async () => {
-    const user = await UserService.createUser(user1);
     const step3: StepResource = {
-        createdBy: user.id!,
+        createdBy: idUser,
         name: "step3",
         description: "description"
     };
@@ -62,9 +98,8 @@ test('should create a step with same name', async () => {
 
 
 test('should delete Step', async () => {
-    const user = await UserService.createUser(user1);
     const step4: StepResource = {
-        createdBy: user.id!,
+        createdBy: idUser,
         name: "step4",
         description: "description"
     };
