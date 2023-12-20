@@ -99,6 +99,31 @@ test("/api/v0/cards/project/:projectId get alle project card, 8 Users", async ()
     expect(response.body.length).toBe(8);
 });
 
+test("/api/v0/cards/project/:projectId/step/:stepId get alle card by project and step", async () => {
+    let numOfTrue = 0;
+    for (let i = 1; i <= 30; i++) {
+        try {
+            const currentNumber = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+            numOfTrue += currentNumber === 0 ? 1 : 0;
+            await CardService.createCard({
+                createdBy: idUser,
+                asignTo: idUser,
+                belongTo: currentNumber === 0 ?  idProject : "invalid-id",
+                inStep: idStep,
+                title: `Card${i}`,
+                description: `description${i}`
+            });
+        } catch (error) {
+
+        }
+    }
+    const testee = supertest(app);
+    const response = await testee.get(`/api/v0/cards/project/${idProject}/step/${idStep}`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toBeInstanceOf(Array);
+    expect(response.body.length).toBe(numOfTrue);
+});
+
 
 test("/api/v0/cards/project/:projectId get alle, project Id", async () => {
     const testee = supertest(app);
