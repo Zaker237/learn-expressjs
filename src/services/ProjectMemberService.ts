@@ -17,7 +17,7 @@ export default class ProjectMemberService {
         }).exec();
         const memberResponse: UserResource[] = [];
         for (const pMember of projectMembers) {
-            const member = await UserService.getUserById(pMember.id!);
+            const member = await UserService.getUserById(pMember.userId.toString());
             memberResponse.push(member);
         }
         return memberResponse;
@@ -38,7 +38,7 @@ export default class ProjectMemberService {
             projectId: new Types.ObjectId(projectId),
             userId: new Types.ObjectId(userId)
         }).exec();
-        if (existingProjectMember) {
+        if (existingProjectMember.length > 0) {
             throw new Error("The User is already member of the project.");
         }
         const pMember = new ProjectMember({

@@ -17,7 +17,7 @@ export default class ProjectStepService {
         }).exec();
         const stepResponse: StepResource[] = [];
         for (const pStep of projectSteps) {
-            const step = await StepService.getStepById(pStep.id!);
+            const step = await StepService.getStepById(pStep.stepId.toString());
             stepResponse.push(step);
         }
         return stepResponse;
@@ -38,16 +38,17 @@ export default class ProjectStepService {
             projectId: new Types.ObjectId(projectId),
             stepId: new Types.ObjectId(stepId)
         }).exec();
-        if (existingProjectStep) {
+        if (existingProjectStep.length > 0) {
             throw new Error("The Step is already in the project.");
         }
-        const projectStep= await ProjectStep.find({
+        const projectSteps = await ProjectStep.find({
             projectId: new Types.ObjectId(projectId)
         }).exec();
+
         const pStep = new ProjectStep({
             projectId: new Types.ObjectId(projectId),
             stepId: new Types.ObjectId(stepId),
-            position: projectStep.length + 1
+            position: projectSteps.length + 1
         });
         try {
             await pStep.save();
