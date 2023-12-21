@@ -43,7 +43,7 @@ export default class ProjectMemberService {
         }
         const pMember = new ProjectMember({
             projectId: new Types.ObjectId(projectId),
-            MemberId: new Types.ObjectId(userId),
+            userId: new Types.ObjectId(userId),
             admin: admin ? admin: false
         });
         try {
@@ -73,7 +73,7 @@ export default class ProjectMemberService {
         }
     }
 
-    public static async updatePositionOfMemberInProject(projectId: string, userId: string, admin?: boolean): Promise<void> {
+    public static async updateMemberInProject(projectId: string, userId: string, admin?: boolean): Promise<void> {
         let project = await Project.findById(projectId).exec();
         if (!project) {
             throw new Error(`Project with ID ${projectId} not found`);
@@ -93,7 +93,7 @@ export default class ProjectMemberService {
         }
         const newProjectMember = new ProjectMember({
             projectId: new Types.ObjectId(projectId),
-            MemberId: new Types.ObjectId(userId),
+            userId: new Types.ObjectId(userId),
             admin: admin? admin: false
         });
         try {
