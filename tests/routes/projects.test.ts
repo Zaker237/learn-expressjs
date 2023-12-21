@@ -3,6 +3,8 @@ import supertest from "supertest";
 import app from "../../src/app";
 import UserService from "../../src/services/UserService";
 import ProjectService from "../../src/services/ProjectService";
+import ProjectStepService from "../../src/services/ProjectStepService";
+import StepService from "../../src/services/StepService";
 
 let idUser: string
 
@@ -18,27 +20,6 @@ beforeEach(async () => {
     })
     idUser = user.id!;
 })
-
-
-test("/api/v0/projects/ get alle, 10 stes", async () => {
-    for (let i = 1; i <= 10; i++) {
-        await ProjectService.createProject({
-            owner: idUser,
-            name: `Project${i}`,
-            description: `description${i}`,
-            startAt: new Date().toISOString(),
-            endsAt: new Date().toISOString(),
-            public: false,
-            closed: false,
-            githublink: `githublink${i}`,
-        });
-    }
-    const testee = supertest(app);
-    const response = await testee.get(`/api/v0/projects/`);
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toBeInstanceOf(Array);
-    expect(response.body.length).toBe(10);
-});
 
 
 test("/api/v0/projects/user/:userId get alle user project, 5 Users", async () => {
@@ -69,6 +50,27 @@ test("/api/v0/projects/user/:userId get alle, badId", async () => {
 });
 
 
+test("/api/v0/projects/ get alle, 10 stes", async () => {
+    for (let i = 1; i <= 10; i++) {
+        await ProjectService.createProject({
+            owner: idUser,
+            name: `Project${i}`,
+            description: `description${i}`,
+            startAt: new Date().toISOString(),
+            endsAt: new Date().toISOString(),
+            public: false,
+            closed: false,
+            githublink: `githublink${i}`,
+        });
+    }
+    const testee = supertest(app);
+    const response = await testee.get(`/api/v0/projects/`);
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toBeInstanceOf(Array);
+    expect(response.body.length).toBe(10);
+});
+
+
 test("/api/v0/projects/:id get project by id", async () => {
     const newProject = await ProjectService.createProject({
         owner: idUser,
@@ -91,6 +93,39 @@ test("/api/v0/projects/:id get project by id", async () => {
 test("/api/v0/projects/:id get badId", async () => {
     const testee = supertest(app);
     const response = await testee.get(`/api/v0/projects/id-does-not-exists`);
+    expect(response.statusCode).toBe(404);
+});
+
+
+test("/api/v0/projects/:projectId/steps: get step by projectId", async () => {
+    const newProject = await ProjectService.createProject({
+        owner: idUser,
+        name: `Project`,
+        description: `description`,
+        startAt: new Date().toISOString(),
+        endsAt: new Date().toISOString(),
+        public: false,
+        closed: false,
+        githublink: `githublink`,
+    });
+    const step = await StepService.createStep({
+        createdBy: idUser,
+        name: "Step",
+        description: "description"
+    });
+    await ProjectStepService.addStepToProject(newProject.id!, step.id!);
+    const testee = supertest(app);
+    const response = await testee.get(`/api/v0/projects/${newProject.id!}/steps`);
+    expect(response.statusCode).toBe(200);
+    const result = await ProjectStepService.getAllStepsInProject(newProject.id!)!
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(1);
+});
+
+
+test("/api/v0/projects/:projectId/steps: get bad projectId", async () => {
+    const testee = supertest(app);
+    const response = await testee.get(`/api/v0/projects/id-does-not-exists/steps`);
     expect(response.statusCode).toBe(404);
 });
 

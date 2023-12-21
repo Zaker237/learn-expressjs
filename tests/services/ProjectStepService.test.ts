@@ -91,6 +91,13 @@ test("getAllStepsInProject get alle", async () => {
 });
 
 
+test("getAllStepsInProject get alle: bad projectId", async () => {
+    expect(
+        async () => await ProjectStepService.getAllStepsInProject("invalid-project-id")
+    ).rejects;
+});
+
+
 test("removeStepFromProject should work", async () => {
     await ProjectStepService.addStepToProject(idProject, idStep);
     expect(

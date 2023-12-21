@@ -83,6 +83,13 @@ test("getAllMembersInProject get alle", async () => {
 });
 
 
+test("getAllMembersInProject get alle: bad projectID", async () => {
+    expect(
+        async () => await ProjectMemberService.getAllMembersInProject("invalid-project-id")
+    ).rejects;
+});
+
+
 test("removeMemberFromProject should work", async () => {
     await ProjectMemberService.addMemberToProject(idProject, idUser);
     expect(
