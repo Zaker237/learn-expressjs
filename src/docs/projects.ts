@@ -225,3 +225,32 @@
  *         description: The project was not found
  *
  */
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Projects
+ *   description: The Projects managing API
+ * /api/v0/projects/{projectId}/steps:
+ *   get:
+ *     summary: Lists all the projects steps
+ *     tags: [Projects]
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The project id
+ *     responses:
+ *       200:
+ *         description: The list of the steps
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Step'
+ *
+ */

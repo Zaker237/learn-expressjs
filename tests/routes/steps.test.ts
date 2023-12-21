@@ -20,7 +20,7 @@ beforeEach(async () => {
 })
 
 
-test("/api/v0/steps/ get alle, 7 stes", async () => {
+test("/api/v0/steps/ get alle", async () => {
     for (let i = 1; i <= 7; i++) {
         await StepService.createStep({
             createdBy: idUser!,
@@ -36,7 +36,7 @@ test("/api/v0/steps/ get alle, 7 stes", async () => {
 });
 
 
-test("/api/v0/steps/user/:userId get alle, 5 Users", async () => {
+test("/api/v0/steps/user/:userId get alle user steps", async () => {
     for (let i = 1; i <= 5; i++) {
         await StepService.createStep({
             createdBy: idUser!,

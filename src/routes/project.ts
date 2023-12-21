@@ -1,6 +1,7 @@
 import express from "express";
 import ProjectService from "../services/ProjectService";
-import { ProjectResource } from "../resources";
+import StepService from "../services/StepService";
+import { ProjectResource, StepResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
 
 
@@ -56,14 +57,33 @@ projectRouter.get("/:id",
     })
 
 
+projectRouter.get("/:projectId/steps",
+    param('projectId').isString(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const id = req.params?.projectId;
+        try {
+            let steps: StepResource[] = await StepService.getStepsCreatedByProject(id);
+            res.status(200)
+            res.send(steps)
+        } catch (err) {
+            res.status(404);
+            next(err);
+        }
+    })
+
+
 projectRouter.post("/",
     body('owner').isString(),
     body('name').isString(),
     body('startAt').isISO8601().toDate(),
     body('endsAt').isISO8601().toDate(),
     body('description').optional().isString(),
-    body('public').optional({values: false}).isBoolean(),
-    body('closed').optional({values: false}).isBoolean(),
+    body('public').optional({ values: false }).isBoolean(),
+    body('closed').optional({ values: false }).isBoolean(),
     body('githublink').optional().isString(),
     async (req, res, next) => {
         const errors = validationResult(req);
@@ -100,8 +120,8 @@ projectRouter.put("/:id",
     body('startAt').isISO8601().toDate(),
     body('endsAt').isISO8601().toDate(),
     body('description').optional().isString(),
-    body('public').optional({values: false}).isBoolean(),
-    body('closed').optional({values: false}).isBoolean(),
+    body('public').optional({ values: false }).isBoolean(),
+    body('closed').optional({ values: false }).isBoolean(),
     body('githublink').optional().isString(),
     async (req, res, next) => {
         const errors = validationResult(req);

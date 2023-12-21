@@ -60,35 +60,6 @@
  * tags:
  *   name: Steps
  *   description: The Steps managing API
- * /api/v0/steps/project/{projectId}:
- *   get:
- *     summary: Lists all the steps
- *     tags: [Steps]
- *     parameters:
- *       - in: path
- *         name: projectId
- *         schema:
- *           type: string
- *         required: true
- *         description: The project id
- *     responses:
- *       200:
- *         description: The list of the steps
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Step'
- *
- */
-
-
-/**
- * @swagger
- * tags:
- *   name: Steps
- *   description: The Steps managing API
  * /api/v0/steps/{id}:
  *  get:
  *     summary: Get the step by id

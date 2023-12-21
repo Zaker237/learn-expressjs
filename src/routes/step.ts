@@ -19,25 +19,6 @@ stepRouter.get("/", async (req, res, next) => {
 })
 
 
-stepRouter.get("/project/:projectId",
-    param('projectId').isString(),
-    async (req, res, next) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
-        }
-        const id = req.params?.projectId;
-        try {
-            let steps: StepResource[] = await StepService.getStepsCreatedByProject(id);
-            res.status(200)
-            res.send(steps)
-        } catch (err) {
-            res.status(404);
-            next(err);
-        }
-    })
-
-
 stepRouter.get("/:id",
     param('id').isString(),
     async (req, res, next) => {
