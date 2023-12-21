@@ -1,4 +1,5 @@
-import {StepResource} from "../../src/resources";
+// @ts-nocxheck
+import supertest from "supertest";
 import UserService from "../../src/services/UserService";
 import ProjectService from "../../src/services/ProjectService";
 import ProjectStepService from "../../src/services/ProjectStepService";
@@ -22,8 +23,8 @@ beforeEach(async () => {
     // create project
     const project= await ProjectService.createProject({
         owner: user.id!,
-        name: "Project1",
-        description: "description1",
+        name: "Project",
+        description: "description",
         startAt: new Date(),
         endsAt: new Date(),
         public: false,
@@ -34,7 +35,7 @@ beforeEach(async () => {
     // create step
     const step = await StepService.createStep({
         createdBy: user.id!,
-        name: "step1",
+        name: "Step",
         description: "description"
     });
     idStep = step.id!;
@@ -72,10 +73,7 @@ test("addStepToProject bad step id", async () => {
 
 
 test("addStepToProject add same: should not work", async () => {
-    await ProjectStepService.addStepToProject(
-        idProject,
-        idStep
-    );
+    await ProjectStepService.addStepToProject(idProject, idStep);
     expect(
         async () => await ProjectStepService.addStepToProject(
             idProject,
@@ -137,7 +135,7 @@ test("removeStepFromProject bad step id", async () => {
 
 
 test("updatePositionOfStepInProject should work", async () => {
-    // await ProjectStepService.addStepToProject(idProject, idStep);
+    await ProjectStepService.addStepToProject(idProject, idStep);
     const step2 = await StepService.createStep({
         createdBy: idUser,
         name: "step2",
@@ -166,7 +164,7 @@ test("updatePositionOfStepInProject non existing", async () => {
 
 
 test("updatePositionOfStepInProject bad project id", async () => {
-    // await ProjectStepService.addStepToProject(idProject, idStep);
+    await ProjectStepService.addStepToProject(idProject, idStep);
     expect(
         async () => await ProjectStepService.updatePositionOfStepInProject(
             "invalid project id",
@@ -178,7 +176,7 @@ test("updatePositionOfStepInProject bad project id", async () => {
 
 
 test("updatePositionOfStepInProject bad step id", async () => {
-    // await ProjectStepService.addStepToProject(idProject, idStep);
+    await ProjectStepService.addStepToProject(idProject, idStep);
     expect(
         async () => await ProjectStepService.updatePositionOfStepInProject(
             idProject,
