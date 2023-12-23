@@ -1,8 +1,9 @@
 import express from "express";
 import ProjectService from "../services/ProjectService";
 import StepService from "../services/StepService";
-import { ProjectResource, StepResource } from "../resources";
+import { ProjectResource, StepResource, UserResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
+import UserService from "src/services/UserService";
 
 
 export const projectRouter = express.Router();
@@ -69,6 +70,25 @@ projectRouter.get("/:projectId/steps",
             let steps: StepResource[] = await StepService.getStepsCreatedByProject(id);
             res.status(200)
             res.send(steps)
+        } catch (err) {
+            res.status(404);
+            next(err);
+        }
+    })
+
+
+projectRouter.get("/:projectId/members",
+    param('projectId').isString(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const id = req.params?.projectId;
+        try {
+            let members: UserResource[] = await UserService.getProjectMember(id);
+            res.status(200)
+            res.send(members)
         } catch (err) {
             res.status(404);
             next(err);

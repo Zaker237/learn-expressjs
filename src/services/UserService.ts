@@ -1,5 +1,8 @@
 import { User } from "../models/UserModel";
 import { UserResource } from "../resources/";
+import { Types } from "mongoose";
+import { Project } from "../models/ProjectModel";
+import ProjectMemberService from "./ProjectMemberService";
 
 
 export default class UserService {
@@ -19,6 +22,24 @@ export default class UserService {
             throw new Error(`User with ID ${id} not found`);
         }
         return this.getUserAsUserResource(user);
+    }
+
+
+    public static async getProjectMember(projectId: string): Promise<UserResource[]> {
+        let project = await Project.find({ id: new Types.ObjectId(projectId) }).exec();
+        if (!project) {
+            throw new Error(`User with ID ${projectId} not found`);
+        }
+
+        const users = await ProjectMemberService.getAllMembersInProject(projectId);
+
+        const stepResponse: UserResource[] = [];
+        for (const user of users) {
+            const resource = this.getUserAsUserResource(user);
+            stepResponse.push(resource)
+        }
+
+        return stepResponse;
     }
 
     public static async createUser(user: UserResource): Promise<UserResource> {

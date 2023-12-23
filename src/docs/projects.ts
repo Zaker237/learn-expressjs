@@ -254,3 +254,32 @@
  *                 $ref: '#/components/schemas/Step'
  *
  */
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Projects
+ *   description: The Projects managing API
+ * /api/v0/projects/{projectId}/members:
+ *   get:
+ *     summary: Lists all the projects members
+ *     tags: [Projects]
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The project id
+ *     responses:
+ *       200:
+ *         description: The list of the users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/User'
+ *
+ */
