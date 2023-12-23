@@ -41,7 +41,136 @@ beforeEach(async () => {
         description: "description"
     });
     idStep = step.id!;
-})
+});
+
+
+test('getAllCards should get all card', async () => {
+    for(let i=1; i <= 6; i++){
+        await CardService.createCard({
+            createdBy: idUser,
+            asignTo: idUser,
+            belongTo: idProject,
+            inStep: idStep,
+            title: `Card${i}`,
+            description: "description"
+        });
+    }
+    const result = await CardService.getAllCards();
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(6);
+});
+
+
+test('should get Card by id', async () => {
+    const card = await CardService.createCard({
+        createdBy: idUser,
+        asignTo: idUser,
+        belongTo: idProject,
+        inStep: idStep,
+        title: "Card1",
+        description: "description"
+    });
+    const result = await CardService.getCardById(card.id!);
+    expect(result.title).toEqual(card.title);
+    expect(result.description).toEqual(card.description);
+});
+
+
+test('should not get Card by id: bad id', async () => {
+    expect(async () => await CardService.getCardById("invaldid-card-id")).rejects;
+});
+
+
+test('getCardsCreatedByUser should get all card created by a user', async () => {
+    let numOfTrue = 0;
+    for (let i = 1; i <= 50; i++) {
+        try {
+            const currentNumber = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+            numOfTrue += currentNumber === 0 ? 1 : 0;
+            await CardService.createCard({
+                createdBy: currentNumber === 0 ?  idUser : "invalid-user-id",
+                asignTo: idUser,
+                belongTo: idProject,
+                inStep: idStep,
+                title: "Card1",
+                description: "description"
+            });
+        } catch (error) {
+
+        }
+    }
+    const result = await CardService.getCardsCreatedByUser(idUser);
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(numOfTrue);
+});
+
+
+test('getCardsCreatedByUser: bad id', async () => {
+    expect(async () => await CardService.getCardsCreatedByUser("invaldid-user-id")).rejects;
+});
+
+
+test('getCardsByProjectId should get all card created in Project', async () => {
+    let numOfTrue = 0;
+    for (let i = 1; i <= 50; i++) {
+        try {
+            const currentNumber = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+            numOfTrue += currentNumber === 0 ? 1 : 0;
+            await CardService.createCard({
+                createdBy: idUser,
+                asignTo: idUser,
+                belongTo: currentNumber === 0 ?  idProject : "invalid-project-id",
+                inStep: idStep,
+                title: `Card${i}`,
+                description: "description"
+            });
+        } catch (error) {
+
+        }
+    }
+    const result = await CardService.getCardsByProjectId(idProject);
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(numOfTrue);
+});
+
+
+test('getCardsByProjectId: bad project id', async () => {
+    expect(async () => await CardService.getCardsByProjectId("invaldid-project-id")).rejects;
+});
+
+
+test('getCardsByProjectIdAndStepId should get all card created in Project', async () => {
+    let numOfTrue = 0;
+    for (let i = 1; i <= 70; i++) {
+        try {
+            const currentNumber = Math.floor(Math.random() * (4 - 1 + 1) + 1);
+            numOfTrue += currentNumber === 0 ? 1 : 0;
+            await CardService.createCard({
+                createdBy: idUser,
+                asignTo: idUser,
+                belongTo: currentNumber === 0 ?  idProject : "invalid-project-id",
+                inStep: currentNumber === 0 ?  idStep : "invalid-step-id",
+                title: `Card${i}`,
+                description: "description"
+            });
+        } catch (error) {
+
+        }
+    }
+    const result = await CardService.getCardsByProjectIdAndStepId(idProject, idStep);
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(numOfTrue);
+});
+
+
+test('getCardsByProjectIdAndStepId: bad project id', async () => {
+    expect(async () => await CardService.getCardsByProjectIdAndStepId("invaldid-project-id", idStep)).rejects;
+});
+
+
+test('getCardsByProjectIdAndStepId: bad step id', async () => {
+    expect(async () => await CardService.getCardsByProjectIdAndStepId(idProject, "invaldid-step-id")).rejects;
+});
 
 
 test('should create a new Card', async () => {
@@ -163,5 +292,5 @@ test('should delete Step', async () => {
 
 
 test('should not delete card: bad Id', async () => {
-    expect(async () => await CardService.deleteCard("this-id-does-not-exist")).resolves;
+    expect(async () => await CardService.deleteCard("invalid card id")).rejects.toThrow(Error);
 });
