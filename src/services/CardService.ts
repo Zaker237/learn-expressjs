@@ -159,13 +159,9 @@ export default class CardService {
     }
 
     public static async deleteCard(id: string): Promise<void> {
-        try {
-            const card = await Card.findByIdAndDelete(id).exec();
-            if (!card) {
-                throw new Error(`Card with ID ${id} not found`);
-            }
-        } catch (error) {
-            throw new Error("Card could not be deleted.")
+        const card = await Card.findByIdAndDelete(id).exec();
+        if (!card) {
+            throw new Error(`Card with ID ${id} not found`);
         }
     }
 

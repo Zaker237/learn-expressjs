@@ -109,13 +109,9 @@ export default class CommentService {
     }
 
     public static async deleteComment(id: string): Promise<void> {
-        try {
-            const comment = await Comment.findByIdAndDelete(id).exec();
-            if (!comment) {
-                throw new Error(`Comment with ID ${id} not found`);
-            }
-        } catch (error) {
-            throw new Error("Comment could not be deleted.")
+        const comment = await Comment.findByIdAndDelete(id).exec();
+        if (!comment) {
+            throw new Error(`Comment with ID ${id} not found`);
         }
     }
 

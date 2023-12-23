@@ -93,16 +93,12 @@ export default class ProjectService {
     }
 
     public static async deleteProject(id: string): Promise<void> {
-        try {
-            const project = await Project.findByIdAndDelete(id).exec();
-            if (!project) {
-                throw new Error(`Project with ID ${id} not found`);
-            }
-            // delete all card in the step
-            //await Card.deleteMany({ inStep: step..toString() }).exec();
-        } catch (error) {
-            throw new Error("Project could not be deleted.")
+        const project = await Project.findByIdAndDelete(id).exec();
+        if (!project) {
+            throw new Error(`Project with ID ${id} not found`);
         }
+        // delete all card in the step
+        //await Card.deleteMany({ inStep: step..toString() }).exec();
     }
 
     public static getProjectAsProjectResource(data: any): ProjectResource {

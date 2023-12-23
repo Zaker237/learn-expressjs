@@ -83,13 +83,9 @@ export default class UserService {
     }
 
     public static async deleteUser(id: string): Promise<void> {
-        try {
-            const user = await User.findByIdAndDelete(id).exec();
-            if (!user) {
-                throw new Error(`User with ID ${id} not found`);
-            }
-        } catch (error) {
-            throw new Error(`User(${id}) could not be deleted.`);
+        const user = await User.findByIdAndDelete(id).exec();
+        if (!user) {
+            throw new Error(`User with ID ${id} not found`);
         }
     }
 

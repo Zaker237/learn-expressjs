@@ -103,16 +103,12 @@ export default class StepService {
     }
 
     public static async deleteStep(id: string): Promise<void> {
-        try {
-            const step = await Step.findByIdAndDelete(id).exec();
-            if (!step) {
-                throw new Error(`Step with ID ${id} not found`);
-            }
-            // delete all card in the step
-            //await Card.deleteMany({ inStep: step..toString() }).exec();
-        } catch (error) {
-            throw new Error("Step could not be deleted.")
+        const step = await Step.findByIdAndDelete(id).exec();
+        if (!step) {
+            throw new Error(`Step with ID ${id} not found`);
         }
+        // delete all card in the step
+        //await Card.deleteMany({ inStep: step..toString() }).exec();
     }
 
     public static getStepAsStepResource(step: any): StepResource {
