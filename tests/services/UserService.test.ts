@@ -2,6 +2,38 @@ import {UserResource} from "../../src/resources";
 import UserService from "../../src/services/UserService";
 
 
+test('getAllUsers should get all user', async () => {
+    for(let i=1; i <= 10; i++){
+        await UserService.createUser({
+            username: `username${i}`,
+            firstname: `firstname${i}`,
+            lastname: `lastname${i}`,
+            email: `test${i}@email.test`,
+            googleId: `googleId${i}`
+        });
+    }
+    const result = await UserService.getAllUsers();
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(10);
+});
+
+
+test('getUserById: should work', async () => {
+    const user1 = await UserService.createUser({
+        username: "username1", firstname: "firstname1", lastname: "lastname1",
+        email: "test1@email.test", googleId: "googleId"
+    });
+    const result = await UserService.getUserById(user1.id!);
+    expect(result.username).toEqual(user1.username);
+    expect(result.email).toEqual(user1.email);
+});
+
+
+test('getUserById: bad id', async () => {
+    expect(async () => await UserService.getUserById("invaldid-user-id")).rejects.toThrow(Error);
+});
+
+
 test('should create a new User', async () => {
     const user1: UserResource ={
         username: "username1", firstname: "firstname1", lastname: "lastname1",
@@ -9,17 +41,6 @@ test('should create a new User', async () => {
     };
     const result = await UserService.createUser(user1);
     expect(result.username).toEqual(user1.username);
-});
-
-
-test('should not create a User with a duplicate email, username or googleId', async () => {
-    const user2: UserResource = {
-        username: "username2", firstname: "firstname2", lastname: "lastname2",
-        email: "test2@email.test", googleId: "googleId2"
-    };
-    const result = await UserService.createUser(user2);
-    expect(async () => await UserService.createUser(user2)).rejects;
-
 });
 
 
@@ -60,4 +81,15 @@ test('should create a new User', async () => {
 
     const result = await UserService.createUser(user1);
     expect(result.username).toEqual(user1.username);
+});
+
+
+test('should not create a User with a duplicate user', async () => {
+    const user2: UserResource = {
+        username: "username2", firstname: "firstname2", lastname: "lastname2",
+        email: "test2@email.test", googleId: "googleId2"
+    };
+    const result = await UserService.createUser(user2);
+    expect(result.username).toEqual(user2.username);
+    expect( async () => await UserService.createUser(user2)).rejects;
 });

@@ -51,9 +51,17 @@ export default class UserService {
             googleId: user.googleId,
             admin: user.admin ? true : false
         });
-        const existingUser = await User.findOne({ email: user.email }).exec()
-        if (existingUser) {
-            throw new Error("The User already exists.");
+        const existingUserEmail = await User.find({ email: user.email }).exec()
+        if (existingUserEmail.length > 0) {
+            throw new Error("The User already exists with the email.");
+        }
+        const existingUserUsername = await User.find({ username: user.username }).exec()
+        if (existingUserUsername.length > 0) {
+            throw new Error("The User already exists with the username.");
+        }
+        const existingUserGoogleId = await User.find({ googleId: user.googleId }).exec()
+        if (existingUserGoogleId.length > 0) {
+            throw new Error("The User already exists with the google id.");
         }
         const savedUser: any = await newUser.save();
         return this.getUserAsUserResource(savedUser);
@@ -61,7 +69,7 @@ export default class UserService {
 
     public static async updateUser(user: UserResource): Promise<UserResource> {
         const existingUser = await User.findById(user.id).exec();
-        if (!existingUser) {
+        if (!user.id || !existingUser) {
             throw new Error("The User does not exist");
         }
         const updatedUser: any = await User.findByIdAndUpdate(
