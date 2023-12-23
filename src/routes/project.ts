@@ -3,7 +3,7 @@ import ProjectService from "../services/ProjectService";
 import StepService from "../services/StepService";
 import { ProjectResource, StepResource, UserResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
-import UserService from "src/services/UserService";
+import UserService from "../services/UserService";
 
 
 export const projectRouter = express.Router();

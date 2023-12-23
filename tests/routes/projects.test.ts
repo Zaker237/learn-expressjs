@@ -4,6 +4,7 @@ import app from "../../src/app";
 import UserService from "../../src/services/UserService";
 import ProjectService from "../../src/services/ProjectService";
 import ProjectStepService from "../../src/services/ProjectStepService";
+import ProjectMemberService from "../../src/services/ProjectMemberService";
 import StepService from "../../src/services/StepService";
 
 let idUser: string
@@ -120,6 +121,34 @@ test("/api/v0/projects/:projectId/steps: get step by projectId", async () => {
     const result = await ProjectStepService.getAllStepsInProject(newProject.id!)!
     expect(result).toBeInstanceOf(Array);
     expect(result.length).toEqual(1);
+});
+
+
+test("/api/v0/projects/:projectId/members: get project members by projectId", async () => {
+    const newProject = await ProjectService.createProject({
+        owner: idUser,
+        name: `Project`,
+        description: `description`,
+        startAt: new Date().toISOString(),
+        endsAt: new Date().toISOString(),
+        public: false,
+        closed: false,
+        githublink: `githublink`,
+    });
+    await ProjectMemberService.addMemberToProject(newProject.id!, idUser);
+    const testee = supertest(app);
+    const response = await testee.get(`/api/v0/projects/${newProject.id!}/members`);
+    expect(response.statusCode).toBe(200);
+    const result = await ProjectMemberService.getAllMembersInProject(newProject.id!)!
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(1);
+});
+
+
+test("/api/v0/projects/:projectId/members: get bad projectId", async () => {
+    const testee = supertest(app);
+    const response = await testee.get(`/api/v0/projects/id-does-not-exists/steps`);
+    expect(response.statusCode).toBe(404);
 });
 
 
