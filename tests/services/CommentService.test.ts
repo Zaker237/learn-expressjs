@@ -49,7 +49,89 @@ beforeEach(async () => {
         description: "description"
     });
     idCard = card.id!;
-})
+});
+
+
+test('getAllComments should get all card', async () => {
+    for(let i=1; i <= 10; i++){
+        await CommentService.createComment({
+            createdBy: idUser,
+            belongTo: idCard,
+            text: `Comment1${i}`
+        });
+    }
+    const result = await CommentService.getAllComments();
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(10);
+});
+
+
+test('should get Comment by id', async () => {
+    const comment = await CommentService.createComment({
+        createdBy: idUser,
+        belongTo: idCard,
+        text: "Comment1"
+    });
+    const result = await CommentService.getCommentById(comment.id!);
+    expect(result.text).toEqual(comment.text);
+});
+
+
+test('should not get Comment by id: bad id', async () => {
+    expect(async () => await CommentService.getCommentById("invaldid-comment-id")).rejects;
+});
+
+
+test('getCommentsCreatedByUser should get all comment created by a user', async () => {
+    let numOfTrue = 0;
+    for (let i = 1; i <= 50; i++) {
+        try {
+            const currentNumber = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+            numOfTrue += currentNumber === 0 ? 1 : 0;
+            await CommentService.createComment({
+                createdBy: currentNumber === 0 ?  idUser : "invalid-user-id",
+                belongTo: idCard,
+                text: `Comment${i}`
+            });
+        } catch (error) {
+
+        }
+    }
+    const result = await CommentService.getCommentsCreatedByUser(idUser);
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(numOfTrue);
+});
+
+
+test('getCommentsCreatedByUser: bad id', async () => {
+    expect(async () => await CommentService.getCommentsCreatedByUser("invaldid-user-id")).rejects;
+});
+
+
+test('getCommentsBelongToCard should get all comment of by card', async () => {
+    let numOfTrue = 0;
+    for (let i = 1; i <= 50; i++) {
+        try {
+            const currentNumber = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+            numOfTrue += currentNumber === 0 ? 1 : 0;
+            await CommentService.createComment({
+                createdBy: idUser,
+                belongTo: currentNumber === 0 ?  idCard : "invalid-card-id",
+                text: `Comment${i}`
+            });
+        } catch (error) {
+
+        }
+    }
+    const result = await CommentService.getCommentsBelongToCard(idCard);
+    expect(result).toBeInstanceOf(Array);
+    expect(result.length).toEqual(numOfTrue);
+});
+
+
+test('getCommentsBelongToCard: bad id', async () => {
+    expect(async () => await CommentService.getCommentsBelongToCard("invaldid-card-id")).rejects;
+});
 
 
 test('should create a new Comment', async () => {
