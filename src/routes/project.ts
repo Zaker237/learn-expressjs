@@ -4,6 +4,7 @@ import StepService from "../services/StepService";
 import { ProjectResource, StepResource, UserResource } from "../resources";
 import { param, body, validationResult } from "express-validator";
 import UserService from "../services/UserService";
+import ProjectStepService from "src/services/ProjectStepService";
 
 
 export const projectRouter = express.Router();
@@ -169,6 +170,33 @@ projectRouter.put("/:id",
             let updatedProject: ProjectResource = await ProjectService.updateProject(newProject);
             res.status(200)
             res.send(updatedProject)
+        } catch (err) {
+            res.status(404);
+            next(err);
+        }
+    })
+
+
+    projectRouter.put("/:projectId/steps/:stepId/update-postion",
+    param('projectId').isString(),
+    param('stepId').isString(),
+    body('old').isString(),
+    body('new').isString(),
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const projectId = req.params?.projectId;
+        const stepId = req.params?.stepId;
+        try {
+            const body = req.body;
+            await ProjectStepService.updatePositionOfStepInProject(
+                projectId,
+                stepId,
+                body.new
+            );
+            res.status(200);
         } catch (err) {
             res.status(404);
             next(err);
