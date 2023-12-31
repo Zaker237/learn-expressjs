@@ -283,3 +283,52 @@
  *                 $ref: '#/components/schemas/User'
  *
  */
+
+
+/**
+ * @swagger
+ * tags:
+ *   name: Projects
+ *   description: The Projects managing API
+ * /api/v0/projects/{projectId}/steps/{stepId}/update-postion:
+ *   put:
+ *     summary: Update the position of a step in a project
+ *     tags: [Projects]
+ *     parameters:
+ *       - in: path
+ *         name: projectId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The project id
+ *       - in: path
+ *         name: stepId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The step id
+ *       - in: body
+ *         name: old
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: The old position
+ *       - in: body
+ *         name: new
+ *         schema:
+ *           type: number
+ *         required: true
+ *         description: The new position
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Project'
+ *     responses:
+ *       200:
+ *         description: The updated step position.
+ *       500:
+ *         description: Some server error
+ *
+ */
