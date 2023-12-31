@@ -95,6 +95,31 @@ export default class ProjectStepService {
         if (!projectStep) {
             throw new Error("The Step is not yet in the project.");
         }
+        const projectSteps = await ProjectStep.find({
+            projectId: new Types.ObjectId(projectId),
+            stepId: new Types.ObjectId(stepId)
+        }).exec();
+        const currentPos = projectStep.position;
+        if (currentPos > newPos){
+            projectSteps.filter((elem) => elem.position < currentPos).forEach(async (elem, index) => {
+                await ProjectStep.findByIdAndUpdate(
+                    elem.id,
+                    {
+                        position: elem.position + 1
+                    }
+                );
+            });
+        }
+        else if (currentPos < newPos){
+            projectSteps.filter((elem) => elem.position > currentPos).forEach(async (elem, index) => {
+                await ProjectStep.findByIdAndUpdate(
+                    elem.id,
+                    {
+                        position: elem.position - 1
+                    }
+                );
+            });
+        }
         const newProjectStep = new ProjectStep({
             projectId: new Types.ObjectId(projectId),
             stepId: new Types.ObjectId(stepId),
